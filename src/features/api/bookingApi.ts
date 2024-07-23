@@ -1,6 +1,7 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
 import { apiDomain } from '../../utils/utils';
+import { BookingFormInputs, BookingResponse } from '../../types/Types';
 
 
 export const bookingApi = createApi({
@@ -12,13 +13,31 @@ export const bookingApi = createApi({
             query: () => 'booking',
             providesTags: ['Booking']
         }),
-        createBooking: builder.mutation({
-            query: (body) => ({
-                url: 'booking',
-                method: 'POST',
-                body
+        approveBooking: builder.mutation({
+            query: (id) => ({
+                url: `booking/approve/${id}`,
+                method: 'PUT'
             }),
             invalidatesTags: ['Booking']
+        }),
+        declineBooking: builder.mutation({
+            query: (id) => ({
+                url: `booking/decline/${id}`,
+                method: 'PUT'
+            }),
+            invalidatesTags: ['Booking']
+        }),
+        createBooking: builder.mutation<BookingResponse, Partial<BookingResponse>>({
+            query: (bookinPayload: BookingFormInputs) => ({
+                url: 'booking',
+                method: 'POST',
+                body:bookinPayload
+            }),
+            invalidatesTags: ['Booking']
+        }),
+        getBookingsByUserId: builder.query({
+            query: (user_id) => `bookings-by-user/${user_id}`,
+            providesTags: ['Booking']
         }),
         updateBooking: builder.mutation({
             query: ({id, ...body}) => ({

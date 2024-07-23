@@ -1,37 +1,64 @@
 import React, { useState } from "react";
 import cover from '../../assets/cover-01.png';
+import { RootState } from "../../app/store";
+import { useSelector } from "react-redux";
 // import Navbar from "../Navbar";
 // import Footer from "../Footer";
 
-interface UserProfileProps {
-  full_name: string;
-  email: string;
-  contact_phone?: string;
-  address?: string;
-}
-
 const UserProfile: React.FC = () => {
-  const [user, setUser] = useState<UserProfileProps>({
-  full_name:"Icily Weird",
-  email:"icilyweird@gmail.com",
-  contact_phone:"+1234567890",
-  address:"123 Main St",
+  const { user } = useSelector((state: RootState) => state.auth);
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    full_name: user?.user.full_name || '',
+    email: user?.user.email || '',
+    contact_phone: user?.user.contact_phone || '',
+    address: user?.user.address || '',
   });
+
+  const handleEditClick = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSave = () => {
+    // Implement save functionality here
+    setIsEditing(false);
+  };
+
+  const handleCancel = () => {
+    // Reset form data to user data if needed
+    setFormData({
+      full_name: user?.user.full_name || '',
+      email: user?.user.email || '',
+      contact_phone: user?.user.contact_phone || '',
+      address: user?.user.address || '',
+    });
+    setIsEditing(false);
+  };
 
   return (
     <>
       {/* <Navbar /> */}
       <div
-        className="h-screen flex items-center justify-center"
-        style={{
-          backgroundImage: `url(${cover})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat"
-        }}
+        className="h-screen flex items-center justify-center bg-cover bg-center"
+        style={{ backgroundImage: `url(${cover})` }}
       >
-        <div className="w-1000 bg-white bg-opacity-75 p-6 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">User Profile</h2>
+        <div className="w-full max-w-4xl bg-white bg-opacity-90 p-6 rounded-lg shadow-lg">
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">My Profile</h1>
+          <div className="flex items-center mb-6">
+            {/* Profile picture placeholder */}
+            <div className="w-24 h-24 bg-gray-300 rounded-full overflow-hidden flex items-center justify-center">
+              <span className="text-white text-2xl font-semibold">{user?.user.full_name?.[0]}</span>
+            </div>
+            <div className="ml-4">
+              <h2 className="text-2xl font-semibold">{user?.user.full_name}</h2>
+              <p className="text-gray-600">{user?.user.email}</p>
+            </div>
+          </div>
           <div className="space-y-4">
             <div className="flex flex-col space-y-2">
               <label htmlFor="full_name" className="text-sm font-medium text-gray-600">Full Name</label>
@@ -39,9 +66,10 @@ const UserProfile: React.FC = () => {
                 type="text"
                 id="full_name"
                 name="full_name"
-                value={user.full_name}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                readOnly
+                value={formData.full_name}
+                onChange={handleInputChange}
+                className={`px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${isEditing ? '' : 'bg-gray-100'}`}
+                readOnly={!isEditing}
               />
             </div>
             <div className="flex flex-col space-y-2">
@@ -50,9 +78,10 @@ const UserProfile: React.FC = () => {
                 type="email"
                 id="email"
                 name="email"
-                value={user.email}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                readOnly
+                value={formData.email}
+                onChange={handleInputChange}
+                className={`px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${isEditing ? '' : 'bg-gray-100'}`}
+                readOnly={!isEditing}
               />
             </div>
             <div className="flex flex-col space-y-2">
@@ -61,9 +90,10 @@ const UserProfile: React.FC = () => {
                 type="text"
                 id="contact_phone"
                 name="contact_phone"
-                value={user.contact_phone || ""}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                readOnly
+                value={formData.contact_phone}
+                onChange={handleInputChange}
+                className={`px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${isEditing ? '' : 'bg-gray-100'}`}
+                readOnly={!isEditing}
               />
             </div>
             <div className="flex flex-col space-y-2">
@@ -72,10 +102,36 @@ const UserProfile: React.FC = () => {
                 type="text"
                 id="address"
                 name="address"
-                value={user.address || ""}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                readOnly
+                value={formData.address}
+                onChange={handleInputChange}
+                className={`px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${isEditing ? '' : 'bg-gray-100'}`}
+                readOnly={!isEditing}
               />
+            </div>
+            <div className="flex justify-end mt-4 space-x-4">
+              {isEditing ? (
+                <>
+                  <button
+                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                    onClick={handleSave}
+                  >
+                    Save
+                  </button>
+                  <button
+                    className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                    onClick={handleCancel}
+                  >
+                    Cancel
+                  </button>
+                </>
+              ) : (
+                <button
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  onClick={handleEditClick}
+                >
+                  Edit
+                </button>
+              )}
             </div>
           </div>
         </div>

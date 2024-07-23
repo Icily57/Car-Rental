@@ -1,117 +1,120 @@
-import React, { useEffect, useState } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { vehiclesApi } from '../../features/api/vehiclesApi';
-import { Car } from '../../types/Types';
+import React from 'react';
+import { bookingApi } from '../../features/api/bookingApi';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from "../../app/store";
+import  {loadStripe} from '@stripe/stripe-js';
+import axios from 'axios';
+const stripePromise = loadStripe('pk_test_51PcnDjRsM9MD60MUSokKWQYDKHJRX6QozjatiXn2BLZkcDSNJabkwtXnXgExy9MRKypMnbxpVuXiND5mWsz3IMGO00jsYR73Rd');
 
-interface BookingFormInputs {
-  carId: number;
+interface UserBooking {
+  id: number;
+  vehicle_id: number;
   booking_date: string;
   return_date: string;
+  booking_status: string;
+  total_amount: number;
 }
 
 const Booking: React.FC = () => {
-  const { data: carsData, error: carsError, isLoading: carsLoading } = vehiclesApi.useGetVehiclesQuery({
-    refetchOnMountOrArgChange: true,
-    pollingInterval: 60000,
-  });
-  const [bookings, setBookings] = useState<BookingFormInputs[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useDispatch();
+  console.log(dispatch);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const user_id = user?.user.id;
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<BookingFormInputs>();
+  const { data: userBookings, error, isLoading } = bookingApi.useGetBookingsByUserIdQuery(user_id);
+console.log(userBookings);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-  useEffect(() => {
-    setIsLoading(carsLoading);
-    setError(carsError ? carsError.toString() : null);
-  }, [carsData, carsLoading, carsError]);
+  if (error) {
+    return <div>Error loading bookings</div>;
+  }
+  const handleDelete=async(id: number)=> {
+    console.log(id);
+    // Implement delete booking functionality
+  }
+  // Filter pending bookings
+  const pendingBookings = userBookings?.filter((booking: UserBooking) => booking.booking_status === 'pending');
 
-  const onSubmit: SubmitHandler<BookingFormInputs> = async (data) => {
+  // Filter confirmed bookings for the table
+  const confirmedBookings = userBookings?.filter((booking: UserBooking) => booking.booking_status === 'confirmed');
+
+
+  const handleCheckout=async(id: number)=> {
+   const booking = pendingBookings.find((booking: { id: number; })=>booking.id === id)
+   console.log(booking);
     try {
-      const response = await fetch('/api/bookings', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to create booking');
-      }
-
-      const result: BookingFormInputs = await response.json();
-      setBookings([...bookings, result]);
-      reset(); // Reset form after successful submission
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
-      setError(errorMessage);
+      const stripe = await stripePromise;
+  
+      const header = {'Content-Type': 'application/json'};
+  
+      const checkoutResponse = await axios.post('http://localhost:8000/checkout-session', JSON.stringify(booking) ,{headers: header});
+      const session = await checkoutResponse.data;
+  
+      await stripe?.redirectToCheckout({sessionId: session.id});
+      console.log('Checkout session:', session);
     }
-  };
+    catch (error) {
+      console.error('Failed to checkout:', error);
+      
+  }
+}
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error fetching cars: {error}</div>;
-
+  
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-center mb-8">Available Cars for Booking</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {carsData?.map((car: Car) => (
-          <div key={car.vehicleSpec_id} className="card shadow-xl p-5">
-            <h2 className="card-title">{car.manufacturer} {car.model} ({car.year})</h2>
-            <p>Fuel Type: {car.fuel_type}</p>
-            <p>Engine Capacity: {car.engine_capacity}</p>
-            <p>Transmission: {car.transmission}</p>
-            <p>Color: {car.color}</p>
-            <p>Rental Rate: {car.rental_rate}</p>
-            <p>Availability: {car.availability}</p>
+    <div className="container mx-auto py-8">
+      <h1 className="text-3xl font-bold text-center mb-8">My Bookings</h1>
+      
+      {/* Display pending bookings in cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+        {pendingBookings?.map((booking: UserBooking) => (
+          <div key={booking.id} className="bg-white rounded-lg shadow-md p-4">
+            <h2 className="text-xl font-bold mb-2">Booking ID: {booking.id}</h2>
+            <p><strong>Booking Date:</strong> {booking.booking_date}</p>
+            <p><strong>Return Date:</strong> {booking.return_date}</p>
+            <p><strong>Status:</strong> {booking.booking_status}</p>
+            <p><strong>Total Amount:</strong> ${booking.total_amount}</p>
+            <div className="flex justify-between mt-4">
+              <button className="btn btn-danger" onClick={() => handleDelete(booking.vehicle_id)}>
+                Delete
+              </button>
+              <button className="btn btn-info" onClick={() => handleCheckout(booking.id)}>
+                Checkout
+              </button>
+            </div>
           </div>
         ))}
       </div>
 
-      <div className="flex items-center justify-center mt-4">
-        <form onSubmit={handleSubmit(onSubmit)} className="card gap-6 p-10 shadow-xl rounded-lg w-fit text-white">
-          <div className="form-control">
-            <label className="label">Car Type</label>
-            <select {...register('carId', { required: true })} className="input input-bordered">
-              <option value="">Select a car</option>
-              {carsData?.map((car: Car) => (
-                <option key={car.vehicleSpec_id} value={car.vehicleSpec_id}>{car.manufacturer} {car.model}</option>
-              ))}
-            </select>
-            {errors.carId && <p className="text-red-500">Car selection is required</p>}
-          </div>
-          <div className="form-control">
-            <label className="label">Booking Date</label>
-            <input type="date" {...register('booking_date', { required: true })} className="input input-bordered" />
-            {errors.booking_date && <p className="text-red-500">Booking date is required</p>}
-          </div>
-          <div className="form-control">
-            <label className="label">Return Date</label>
-            <input type="date" {...register('return_date', { required: true })} className="input input-bordered" />
-            {errors.return_date && <p className="text-red-500">Return date is required</p>}
-          </div>
-          <div className="flex space-x-4">
-            <button type="submit" className="btn btn-primary">Book Now</button>
-            <button type="button" className="btn btn-secondary" onClick={() => alert('Payment functionality not implemented yet')}>Pay Now</button>
-          </div>
-        </form>
-      </div>
-
-      <div className="container mx-auto py-8">
-        <h1 className="text-3xl font-bold text-center mb-8">Booking Details</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {bookings.map((booking, index) => (
-            <div key={index} className="card shadow-xl p-5">
-              <h2 className="card-title">Booking {index + 1}</h2>
-              <p>Car ID: {booking.carId}</p>
-              <p>Booking Date: {booking.booking_date}</p>
-              <p>Return Date: {booking.return_date}</p>
-            </div>
-          ))}
-        </div>
+      {/* Display confirmed bookings in a table */}
+      <h2 className="text-2xl font-bold text-center mb-4">Confirmed Bookings</h2>
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white rounded-lg shadow-md">
+          <thead>
+            <tr>
+              <th className="py-2 px-4 bg-gray-200 font-bold">Booking ID</th>
+              <th className="py-2 px-4 bg-gray-200 font-bold">Booking Date</th>
+              <th className="py-2 px-4 bg-gray-200 font-bold">Return Date</th>
+              <th className="py-2 px-4 bg-gray-200 font-bold">Total Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {confirmedBookings?.map((booking: UserBooking) => (
+              <tr key={booking.id}>
+                <td className="py-2 px-4 border">{booking.id}</td>
+                <td className="py-2 px-4 border">{booking.booking_date}</td>
+                <td className="py-2 px-4 border">{booking.return_date}</td>
+                <td className="py-2 px-4 border">${booking.total_amount}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
+
+  
 };
 
 export default Booking;

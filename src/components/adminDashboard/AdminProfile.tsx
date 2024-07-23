@@ -1,5 +1,5 @@
 import cover from '../../assets/cover-01.png';
-import React, { useState } from "react";
+import  { useState } from "react";
 
 
   interface UserProfileProps {
@@ -16,6 +16,7 @@ import React, { useState } from "react";
       contact_phone: "123-568-7890",
       address: "123 Main St, USA",
     });
+    console.log(setUser);
   return (
     <>
       {/* <Navbar /> */}

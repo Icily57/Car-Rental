@@ -75,6 +75,7 @@ const Analytics = () => {
         ...prevData,
         totalRevenue:paymentData.length,
       }));
+      console.log(totalRevenue);
     }
   }, [paymentData]);
 
@@ -86,32 +87,32 @@ const Analytics = () => {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Analytics</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <h1 className="text-4xl font-extrabold mb-4 text-white text-center ">Analytics</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 ">
         {/* Cards for displaying analytics data */}
         {/* Total Bookings */}
-        <div className="card bg-primary text-primary-content shadow-lg">
+        <div className="card bg-white shadow-lg">
           <div className="card-body">
             <h2 className="card-title">Total Bookings</h2>
             <p className="text-3xl">{analyticsData.totalBookings}</p>
           </div>
         </div>
         {/* Total Revenue */}
-        <div className="card bg-secondary text-secondary-content shadow-lg">
+        <div className="card bg-white text-primary-content shadow-lg">
           <div className="card-body">
             <h2 className="card-title">Total Revenue</h2>
             <p className="text-3xl">${analyticsData.totalRevenue.toFixed(2)}</p>
           </div>
         </div>
         {/* Total Users */}
-        <div className="card bg-accent text-accent-content shadow-lg">
+        <div className="card bg-white text-primary-content shadow-lg">
           <div className="card-body">
             <h2 className="card-title">Total Users</h2>
             <p className="text-3xl">{analyticsData.totalUsers}</p>
           </div>
         </div>
         {/* Total Vehicles */}
-        <div className="card bg-neutral text-neutral-content shadow-lg">
+        <div className="card bg-white text-primary-content shadow-lg">
           <div className="card-body">
             <h2 className="card-title">Total Vehicles</h2>
             <p className="text-3xl">{analyticsData.totalVehicles}</p>

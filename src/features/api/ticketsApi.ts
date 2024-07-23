@@ -7,16 +7,20 @@ export const ticketsApi = createApi({
     tagTypes: ['Ticket'],
     endpoints: (builder) => ({
         getTickets: builder.query({
-            query: () => 'customerSupportTickets',
+            query: () => 'Tickets',
             providesTags: ['Ticket']
         }),
         getTicket: builder.query({
-            query: (id) => `customerSupportTickets/${id}`,
+            query: (id) => `Tickets/${id}`,
+            providesTags: ['Ticket']
+        }),
+        getTicketsByUserId: builder.query({
+            query: (user_id) => `tickets-by-user/${user_id}`,
             providesTags: ['Ticket']
         }),
         createTicket: builder.mutation({
             query: (body) => ({
-                url: 'customerSupportTickets',
+                url: 'Tickets',
                 method: 'POST',
                 body
             }),
@@ -24,7 +28,7 @@ export const ticketsApi = createApi({
         }),
         updateTicket: builder.mutation({
             query: ({id, ...body}) => ({
-                url: `customerSupportTickets/${id}`,
+                url: `Tickets/${id}`,
                 method: 'PUT',
                 body
             }),
@@ -32,7 +36,7 @@ export const ticketsApi = createApi({
         }),
         deleteTicket: builder.mutation({
             query: (id) => ({
-                url: `customerSupportTickets/${id}`,
+                url: `Tickets/${id}`,
                 method: 'DELETE'
             }),
             invalidatesTags: ['Ticket']

@@ -5,27 +5,19 @@ import Navbar from "../components/Navbar";
 import { FormValues } from "../types/Types";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { usersApi } from "../features/api/usersApi";
-import { useDispatch } from "react-redux";
-import { setUserRegister } from "../features/auth/authSlice";
-
 const Register: React.FC = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
   const [registerUser, { isLoading }] = usersApi.useRegisterMutation();
-  const dispatch = useDispatch();
+  
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    try {
-      console.log('Submitting data:', data); // Log data being submitted
-      const user = await registerUser(data).unwrap();
-      console.log('User registered successfully:', user);
-      // dispatch(setUserRegister({ user: user.data, token: user.data.token }));
-      navigate('/dashboard');
-    } catch (error) {
-      console.error(error);
-      // if ((error as any).data) {
-      //   console.error('Error details:', (error as any).data); // Log server response error details
-      // }
+    try {      
+       await registerUser(data).unwrap();
+     
+      navigate('/login');
+    } catch (err:any) {
+      alert('An error occurred try again');
     }
   };
 

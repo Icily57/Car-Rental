@@ -1,5 +1,4 @@
 // import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { paymentApi } from '../../features/api/paymentApi';
 
 interface Payment {
@@ -12,18 +11,15 @@ interface Payment {
     payment_method: string;
 }
 
-const UserPayments = () => {
-    // Assuming you have a selector to get the logged-in user_id
-    const user_id = useSelector((state: any) => state.auth.user.id);
-    
-    const { data: payments, isError, isLoading } = paymentApi.useGetPaymentsQuery(user_id, {
+const AllPayments = () => {
+    const { data: payments, isError, isLoading } = paymentApi.useGetPaymentsQuery(1, {
         refetchOnFocus: true,
         pollingInterval: 60000,
     });
 
     return (
         <div className="p-4">
-            <h1 className="text-2xl font-bold mb-4">Your Payments</h1>
+            <h1 className="text-2xl font-bold mb-4">All Payments</h1>
             {isLoading && <div className="text-center">Loading...</div>}
             {isError && <div className="text-center text-red-500">Error fetching payments</div>}
             {payments && (
@@ -32,6 +28,7 @@ const UserPayments = () => {
                         <thead className="bg-gray-200">
                             <tr>
                                 <th className="py-2 px-4 border-b">ID</th>
+                                <th className="py-2 px-4 border-b">User ID</th>
                                 <th className="py-2 px-4 border-b">Booking ID</th>
                                 <th className="py-2 px-4 border-b">Payment Date</th>
                                 <th className="py-2 px-4 border-b">Payment Status</th>
@@ -43,6 +40,7 @@ const UserPayments = () => {
                             {payments.map((payment: Payment) => (
                                 <tr key={payment.id}>
                                     <td className="py-2 px-4 border-b">{payment.id}</td>
+                                    <td className="py-2 px-4 border-b">{payment.user_id}</td>
                                     <td className="py-2 px-4 border-b">{payment.booking_id}</td>
                                     <td className="py-2 px-4 border-b">{payment.payment_date}</td>
                                     <td className="py-2 px-4 border-b">
@@ -66,4 +64,4 @@ const UserPayments = () => {
     );
 };
 
-export default UserPayments;
+export default AllPayments;

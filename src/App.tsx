@@ -4,19 +4,22 @@ import Dashboard from './pages/Dashboard.tsx'
 import Error from './pages/Error.tsx'
 import Explore from './pages/Explore.tsx'
 import About from './pages/About.tsx'
-import Login from './pages/Login.tsx'
+import Login from './components/UserLogin.tsx'
 import UserProfile from './components/dashboard/UserProfile.tsx'
 import Bookings from '../src/components/dashboard/Bookings.tsx'
 import Tickets from './components/dashboard/Tickets.tsx'
 import AdminDashboard from './pages/AdminDashboard.tsx'
-import Analytics from './components/adminDashboard/Analytics.tsx'
-import UserProfiles from './components/adminDashboard/UserProfiles.tsx'
 import AdminProfile from './components/adminDashboard/AdminProfile.tsx'
 import VehicleDetails from './pages/VehicleDetails.tsx'
 import Payments from '../src/components/dashboard/Payment.tsx'
-import AdminBookings from './Dashboard/pages/AdminBookings.tsx'
-import AdminHome from './Dashboard/pages/AdminHome.tsx'
 import Register from './pages/Register.tsx'
+import AllBookings from './components/adminDashboard/AllBookings.tsx'
+import AllUsers from './components/adminDashboard/AllUsers.tsx'
+import AllVehicles from './components/adminDashboard/AllVehicles.tsx'
+import AllsVehSpecs from './components/adminDashboard/AllsVehSpecs.tsx'
+import AllPayments from './components/adminDashboard/AllPayment.tsx'
+import AdminLogin from './components/AdminLogin.tsx'
+import AdminHome from './pages/AdminHome.tsx'
 
 const router = createBrowserRouter([
   {
@@ -25,10 +28,15 @@ const router = createBrowserRouter([
     errorElement:<Error/>,
   },
   {
-    path: 'admin-home',
-    element: <AdminHome />,
-    errorElement:<Error/>,
-  },
+    path: 'login',
+      element: <Login />,
+      errorElement:<Error/>,
+    },
+    {
+      path: 'register',
+      element: <Register />,
+      errorElement:<Error/>,
+    },
   {
     path: 'explore',
     element: <Explore />,
@@ -40,18 +48,23 @@ const router = createBrowserRouter([
     errorElement:<Error/>,
   },
   {
+    path: 'login/admin',
+    element: <AdminLogin />,
+    errorElement:<Error/>,
+  },
+  {
+    path: '/admin',
+      element: <AdminHome />,
+      errorElement:<Error/>,
+  },
+  {
+    path: '/admin/vehicles',
+    element: <AllVehicles />,
+      errorElement:<Error/>,
+  },
+  {
     path: 'vehicle/:id',
     element: <VehicleDetails />,
-    errorElement:<Error/>,
-  },
-  {
-    path: 'register',
-    element: <Register />,
-    errorElement:<Error/>,
-  },
-  {
-    path: 'login',
-    element: <Login />,
     errorElement:<Error/>,
   },
   {
@@ -85,23 +98,27 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Analytics />,
+        element: <AllUsers />,
       },
       {
         path: "me",
         element: <AdminProfile />,
       },
       {
-        path: "users-profiles",
-        element: <UserProfiles />,
+        path: "bookings",
+        element: <AllBookings />,
       },
       {
-        path: "booking",
-        element: <AdminBookings />,
+        path: "payments",
+        element: <AllPayments />,
       },
+      // {
+      //   path: "vehicles",
+      //   element: <AllVehicles />,
+      // },
       {
-        path: "vehicles",
-        element: <VehicleDetails />,
+        path: "vehicles-specs",
+        element: <AllsVehSpecs />,
       },
     ]
   },

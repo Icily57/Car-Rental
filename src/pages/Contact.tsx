@@ -2,7 +2,7 @@
 // import { useNavigate } from 'react-router-dom';
 // import Navbar from "../components/Navbar";
 // import Footer from "../components/Footer";
-import contact from '../assets/benefit-one.png'
+// import contact from '../assets/benefit-one.png'
 
 // const menuItems = [
 //     {

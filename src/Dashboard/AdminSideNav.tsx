@@ -1,18 +1,18 @@
 
-import { Users, SquareUserRound, HardDriveDownload, Menu, LogOut } from "lucide-react"
+import {  LogOut } from "lucide-react"
 import { Link } from "react-router-dom"
 function AdminSideNav() {
     return (
         <ul className="menu bg-base-200  min-w-full gap-2 text-base-content min-h-full">
-            <li>               
+            {/* <li>               
                     <ul className="flex flex-col">
                         <li> <Link to="">Analytics</Link></li>
                     </ul>
                 
-            </li>          
+            </li>           */}
             <li>
                     <ul>
-                        <li><Link to="users-profiles"> UserProfiles</Link></li>
+                        <li><Link to="">All Users</Link></li>
                     </ul>
             </li>
             <li>
@@ -21,13 +21,19 @@ function AdminSideNav() {
                     <ul>
                         <li><Link to="bookings">Bookings</Link></li>
                     </ul>
+                    <ul>
+                        <li><Link to="payments">Payments</Link></li>
+                    </ul>
                 {/* </details> */}
             </li>
             <li>
                 {/* <details > */}
                     {/* <summary><Users />vehicles </summary> */}
-                    <ul>
+                    {/* <ul>
                         <li><Link to="vehicles"> Vehicles</Link></li>
+                    </ul> */}
+                    <ul>
+                        <li><Link to="vehicles-specs"> Vehicles Specs</Link></li>
                     </ul>
                 {/* </details> */}
             </li>

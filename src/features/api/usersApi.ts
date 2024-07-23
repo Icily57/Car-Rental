@@ -21,7 +21,14 @@ export const usersApi = createApi({
             }),
             invalidatesTags: ['User']
         }),
-        login: builder.mutation({
+        userlogin: builder.mutation({
+            query: (loginData:FormValues) => ({
+                url: 'auth/login',
+                method: 'POST',
+                body:loginData
+            }),
+        }),
+        adminlogin: builder.mutation({
             query: (loginData:FormValues) => ({
                 url: 'auth/login',
                 method: 'POST',

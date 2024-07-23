@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { usersApi } from '../../features/api/usersApi';
 import { FormValues } from '../../types/Types';
 
-const UserProfiles = () => {
+const AllUsers = () => {
   const { data: userData, error, isLoading } = usersApi.useGetUsersQuery({
     refetchOnMountOrArgChange: true,
     pollingInterval: 60000,
@@ -43,9 +43,9 @@ const UserProfiles = () => {
               </td>
               <td>{user.contact_phone}</td>
               <td>{user.address}</td>
-              {/* <td>
+              <td>
                 <button className="btn btn-ghost btn-xs">details</button>
-              </td> */}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -55,4 +55,4 @@ const UserProfiles = () => {
   );
 }
 
-export default UserProfiles;
+export default AllUsers;
