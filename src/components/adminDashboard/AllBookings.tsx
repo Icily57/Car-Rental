@@ -14,7 +14,7 @@ const AllBookings = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const { data: userBookings, error, isLoading } = bookingApi.useGetBookingsQuery(bookings);
   const [approveBooking, { isLoading: isApproving }] = bookingApi.useApproveBookingMutation();
-  const [declineBooking, { isLoading: isDeclining }] = bookingApi.useDeclineBookingMutation();
+  // const [declineBooking, { isLoading: isDeclining }] = bookingApi.useDeclineBookingMutation();
   const [loadingBookingId, setLoadingBookingId] = useState<number | null>(null);
 
   useEffect(() => {
@@ -45,26 +45,26 @@ const AllBookings = () => {
     console.log('Approved booking', bookingId);
   };
 
-  const handleDecline = async (bookingId: number) => {
-    setLoadingBookingId(bookingId);
-    try {
-      await declineBooking({
-        id: bookingId,
-        booking_status: 'declined',
-      }).unwrap();
-      // Update the booking status in the state
-      setBookings((prevBookings) =>
-        prevBookings.map((booking) =>
-          booking.id === bookingId ? { ...booking, booking_status: 'declined' } : booking
-        )
-      );
-    } catch (error) {
-      console.error('Failed to decline booking:', error);
-    } finally {
-      setLoadingBookingId(null);
-    }
-    console.log('Declined booking', bookingId);
-  };
+  // const handleDecline = async (bookingId: number) => {
+  //   setLoadingBookingId(bookingId);
+  //   try {
+  //     await declineBooking({
+  //       id: bookingId,
+  //       booking_status: 'declined',
+  //     }).unwrap();
+  //     // Update the booking status in the state
+  //     setBookings((prevBookings) =>
+  //       prevBookings.map((booking) =>
+  //         booking.id === bookingId ? { ...booking, booking_status: 'declined' } : booking
+  //       )
+  //     );
+  //   } catch (error) {
+  //     console.error('Failed to decline booking:', error);
+  //   } finally {
+  //     setLoadingBookingId(null);
+  //   }
+  //   console.log('Declined booking', bookingId);
+  // };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -107,13 +107,13 @@ const AllBookings = () => {
                   >
                     Approve
                   </button>
-                  <button
+                  {/* <button
                     className="btn btn-warning"
                     onClick={() => handleDecline(booking.id)}
                     disabled={isDeclining && loadingBookingId === booking.id}
                   >
                     Decline
-                  </button>
+                  </button> */}
                 </td>
               </tr>
             ))}

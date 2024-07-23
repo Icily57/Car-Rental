@@ -49,10 +49,10 @@ console.log(vehicles)
     return <div>Error loading vehicles</div>;
   }
 
-  const handleUpdateVehicle = (id: number) => {
-    // Implement the logic to update the vehicle spec
-    console.log('Update vehicle  logic for ID:', id);
-  };
+  // const handleUpdateVehicle = (id: number) => {
+  //   // Implement the logic to update the vehicle spec
+  //   console.log('Update vehicle  logic for ID:', id);
+  // };
 
   const handleDeleteVehicle = async (id: number) => {
     try {
@@ -88,7 +88,7 @@ console.log(vehicles)
                   <td className="py-2 px-4 border">{vehicle.vehicleSpecs.manufacturer}</td>
                   <td className="py-2 px-4 border">${vehicle.rental_rate}</td>
                   <td className="py-2 px-4 border">
-                    <button onClick={() => handleUpdateVehicle(vehicle.id)} className="btn btn-info mr-2">Edit</button>
+                    {/* <button onClick={() => handleUpdateVehicle(vehicle.id)} className="btn btn-info mr-2">Edit</button> */}
                     <button onClick={() => handleDeleteVehicle(vehicle.id)} className="btn btn-danger">Delete</button>
                   </td>
                 </tr>

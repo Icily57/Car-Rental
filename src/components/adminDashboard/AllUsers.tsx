@@ -29,7 +29,7 @@ const AllUsers = () => {
             <th className="text-green-300">Email</th>
             <th className="text-green-300">Contact</th>
             <th className="text-green-300">Address</th>
-            <th className="text-green-300">Options</th>
+            <th className="text-green-300">Role</th>
           </tr>
         </thead>
         <tbody>
@@ -44,7 +44,7 @@ const AllUsers = () => {
               <td>{user.contact_phone}</td>
               <td>{user.address}</td>
               <td>
-                <button className="btn btn-ghost btn-xs">details</button>
+              <td>{user.role}</td>
               </td>
             </tr>
           ))}
