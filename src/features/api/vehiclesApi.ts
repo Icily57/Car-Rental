@@ -54,6 +54,13 @@ export const vehiclesApi = createApi({
             }),
             invalidatesTags: ['vehicle']
         }),
+        deleteCar: builder.mutation({
+            query: (id) => ({
+                url: `vehicle/${id}`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: ['vehicle']
+        }),
         getVehicleSpecs: builder.query({    
             query: () => 'vehicleSpecs',
             providesTags: ['vehicle']

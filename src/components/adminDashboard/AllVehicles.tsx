@@ -25,6 +25,7 @@ interface Car {
 
 const AllVehicles = () => {
   const [vehicles, setVehicles] = useState<Car[]>([]);
+  const [deleteCar] = vehiclesApi.useDeleteCarMutation();
   const { data: allVehicles, isError, isLoading } = vehiclesApi.useGetVehiclesWithTheirDetailsQuery(1
     ,{
         refetchOnMountOrArgChange: true,
@@ -53,9 +54,15 @@ console.log(vehicles)
     console.log('Update vehicle  logic for ID:', id);
   };
 
-  const handleDeleteVehicle = (id: number) => {
-    // Implement the logic to delete the vehicle spec
-    console.log('Delete vehicle logic for ID:', id);
+  const handleDeleteVehicle = async (id: number) => {
+    try {
+      const response = await deleteCar(id).unwrap();
+      console.log('Deleted vehicle with ID:', id);
+      console.log(response);
+      setVehicles(vehicles.filter(vehicle => vehicle.id !== id));
+    } catch (error) {
+      console.error('Failed to delete vehicle', error);
+    }
   };
 
   return (
@@ -65,13 +72,12 @@ console.log(vehicles)
       <div className="flex-grow">
         <h1 className="text-2xl font-bold text-center mb-4">All Vehicles</h1>
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-white rounded-lg shadow-md">
+          <table className="table-fixed min-w-full bg-white rounded-lg shadow-md">
             <thead>
               <tr>
                 <th className="py-2 px-4 bg-gray-200 font-bold">ID</th>
                 <th className="py-2 px-4 bg-gray-200 font-bold">Name</th>
                 <th className="py-2 px-4 bg-gray-200 font-bold">Rental Rate</th>
-                <th className="py-2 px-4 bg-gray-200 font-bold">Availability</th>
                 <th className="py-2 px-4 bg-gray-200 font-bold">Actions</th>
               </tr>
             </thead>
@@ -81,7 +87,6 @@ console.log(vehicles)
                   <td className="py-2 px-4 border">{vehicle.id}</td>
                   <td className="py-2 px-4 border">{vehicle.vehicleSpecs.manufacturer}</td>
                   <td className="py-2 px-4 border">${vehicle.rental_rate}</td>
-                  <td className="py-2 px-4 border">{vehicle.availability}</td>
                   <td className="py-2 px-4 border">
                     <button onClick={() => handleUpdateVehicle(vehicle.id)} className="btn btn-info mr-2">Edit</button>
                     <button onClick={() => handleDeleteVehicle(vehicle.id)} className="btn btn-danger">Delete</button>

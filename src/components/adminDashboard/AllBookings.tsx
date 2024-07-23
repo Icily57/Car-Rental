@@ -15,6 +15,7 @@ const AllBookings = () => {
   const { data: userBookings, error, isLoading } = bookingApi.useGetBookingsQuery(bookings);
   const [approveBooking, { isLoading: isApproving }] = bookingApi.useApproveBookingMutation();
   const [declineBooking, { isLoading: isDeclining }] = bookingApi.useDeclineBookingMutation();
+  const [loadingBookingId, setLoadingBookingId] = useState<number | null>(null);
 
   useEffect(() => {
     if (userBookings) {
@@ -23,6 +24,8 @@ const AllBookings = () => {
   }, [userBookings]);
 
   const handleApprove = async (bookingId: number) => {
+    setLoadingBookingId(bookingId);
+    console.log('Approving booking', bookingId);
     try {
       await approveBooking({
         id: bookingId,
@@ -35,12 +38,15 @@ const AllBookings = () => {
         )
       );
     } catch (error) {
-      console.error('Failed to approve booking', error);
+      console.error('Failed to approve booking:');
+    } finally {
+      setLoadingBookingId(null);
     }
+    console.log('Approved booking', bookingId);
   };
-  
 
   const handleDecline = async (bookingId: number) => {
+    setLoadingBookingId(bookingId);
     try {
       await declineBooking({
         id: bookingId,
@@ -53,8 +59,11 @@ const AllBookings = () => {
         )
       );
     } catch (error) {
-      console.error('Failed to decline booking', error);
+      console.error('Failed to decline booking:', error);
+    } finally {
+      setLoadingBookingId(null);
     }
+    console.log('Declined booking', bookingId);
   };
 
   if (isLoading) {
@@ -94,14 +103,14 @@ const AllBookings = () => {
                   <button
                     className="btn btn-info"
                     onClick={() => handleApprove(booking.id)}
-                    disabled={isApproving}
+                    disabled={isApproving && loadingBookingId === booking.id}
                   >
                     Approve
                   </button>
                   <button
                     className="btn btn-warning"
                     onClick={() => handleDecline(booking.id)}
-                    disabled={isDeclining}
+                    disabled={isDeclining && loadingBookingId === booking.id}
                   >
                     Decline
                   </button>

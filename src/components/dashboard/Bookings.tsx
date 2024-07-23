@@ -21,6 +21,8 @@ const Booking: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const user_id = user?.user.id;
 
+  console.log(user_id);
+
   const { data: userBookings, error, isLoading } = bookingApi.useGetBookingsByUserIdQuery(user_id);
 console.log(userBookings);
   if (isLoading) {
@@ -38,7 +40,7 @@ console.log(userBookings);
   const pendingBookings = userBookings?.filter((booking: UserBooking) => booking.booking_status === 'pending');
 
   // Filter confirmed bookings for the table
-  const confirmedBookings = userBookings?.filter((booking: UserBooking) => booking.booking_status === 'confirmed');
+  const confirmedBookings = userBookings?.filter((booking: UserBooking) => booking.booking_status === 'approved');
 
 
   const handleCheckout=async(id: number)=> {
