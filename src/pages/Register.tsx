@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import { FormValues } from "../types/Types";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { usersApi } from "../features/api/usersApi";
+import toast from "react-hot-toast";
 const Register: React.FC = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
   const [registerUser, { isLoading }] = usersApi.useRegisterMutation();
@@ -14,10 +15,10 @@ const Register: React.FC = () => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {      
        await registerUser(data).unwrap();
-     
+     toast('Registration successful, please login');
       navigate('/login');
     } catch (err:any) {
-      alert('An error occurred try again');
+      toast('An error occurred try again');
     }
   };
 
@@ -46,9 +47,9 @@ const Register: React.FC = () => {
             <label className="input input-bordered flex items-center gap-2 w-full max-w-xs">
               <input {...register("address")} type="text" className="grow" placeholder="Address" />
             </label>
-            <label className="input input-bordered flex items-center gap-2 w-full max-w-xs">
+            {/* <label className="input input-bordered flex items-center gap-2 w-full max-w-xs">
               <input {...register("role")} type="text" className="grow" placeholder="Role" />
-            </label>
+            </label> */}
           </div>
           <div className="w-full flex justify-center">
             <button type="submit" className="btn btn-success py-3 pb-10 px-10 rounded-lg text-lg">
