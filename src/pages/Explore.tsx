@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { vehiclesApi } from "../features/api/vehiclesApi";
-import Car1 from '../assets/images/car.jpg';
+import PlaceholderImage from '../assets/images/car.jpg'; // Placeholder image
 
 interface VehicleSpecs {
   vehicleSpec_id: number;
@@ -65,9 +65,10 @@ const Explore: React.FC = () => {
             car && car.vehicleSpecs && (
               <div key={car.id} className="card shadow-xl">
                 <img
-                  src={car.vehicleSpecs.imageUrl || Car1}
+                  src={car.vehicleSpecs.imageUrl || PlaceholderImage}
                   alt={`${car.vehicleSpecs.manufacturer} ${car.vehicleSpecs.model}`}
                   className="card-image"
+                  onError={(e) => (e.currentTarget.src = PlaceholderImage)}
                 />
                 <div className="card-body">
                   <h2 className="card-title">{`${car.vehicleSpecs.manufacturer} ${car.vehicleSpecs.model}`}</h2>

@@ -3,6 +3,7 @@ import { vehiclesApi } from '../../features/api/vehiclesApi';
 import { useForm } from 'react-hook-form';
 import { VehicleSpecsFormValues } from '../../types/Types';
 import axios from 'axios';
+import {cloudinaryConfig} from '../../cloudinary/cloudinary';
 
 interface VehicleSpecs {
   id: number;
@@ -17,14 +18,14 @@ interface VehicleSpecs {
   color: string;
 }
 
-interface VehicleFormValues {
-  rental_rate: number;
-  vehicleSpec_id: number;
-}
+// interface VehicleFormValues {
+//   rental_rate: number;
+//   vehicleSpec_id: number;
+// }
 
 const AllsVehSpecs: React.FC = () => {
-  const preset_key = "zkm9gt8i";
-  const cloud_name = "dlci2voox";
+  // const preset_key = "zkm9gt8i";
+  // const cloud_name = "dlci2voox";
   const { data: allSpecVehicles, isError, isLoading: vehSpecsLoading } = vehiclesApi.useGetVehicleSpecsQuery(undefined, {
     refetchOnMountOrArgChange: true,
     pollingInterval: 60000,
@@ -32,12 +33,13 @@ const AllsVehSpecs: React.FC = () => {
 
   const [imageUrl, setImageUrl] = useState<string>("");
   const { register, handleSubmit } = useForm<VehicleSpecsFormValues>();
-  const [selectedVehicleSpecId, setSelectedVehicleSpecId] = useState<number>(0);
-  const [rentalRate, setRentalRate] = useState<number>(0);
+  // const [selectedVehicleSpecId, setSelectedVehicleSpecId] = useState<number>(0);
+  // const [rentalRate, setRentalRate] = useState<number>(0);
   const [vehiclesSpecs, setVehiclesSpecs] = useState<VehicleSpecs[]>([]);
   const [addSpecs] = vehiclesApi.useAddSpecsMutation();
   const [deleteSpecs] = vehiclesApi.useDeleteSpecsMutation();
   const [addVehicle, { isLoading: addVehicleIsLoading }] = vehiclesApi.useAddCarMutation();
+  console.log(addVehicle);
 
   if (addVehicleIsLoading) {
     return <div>Loading...</div>;
@@ -49,9 +51,9 @@ const AllsVehSpecs: React.FC = () => {
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", preset_key);
+    formData.append("upload_preset", cloudinaryConfig.uploadPreset);
     try {
-      const res = await axios.post(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, formData);
+      const res = await axios.post(`https://api.cloudinary.com/v1_1/${cloudinaryConfig.cloudName}/image/upload`, formData);
       setImageUrl(res.data.secure_url);
     } catch (error) {
       console.error('Failed to upload image', error);
@@ -80,22 +82,22 @@ const AllsVehSpecs: React.FC = () => {
     }
   };
 
-  const handleAddVehicle = async () => {
-    if (rentalRate === 0) {
-      alert('Please enter rental rate');
-      return;
-    }
-    const vehicledata: VehicleFormValues = {
-      vehicleSpec_id: selectedVehicleSpecId,
-      rental_rate: rentalRate,
-    };
-    try {
-      const response = await addVehicle(vehicledata).unwrap();
-      console.log(response);
-    } catch (error) {
-      console.error('Failed to add vehicle', error);
-    }
-  };
+  // const handleAddVehicle = async () => {
+  //   if (rentalRate === 0) {
+  //     alert('Please enter rental rate');
+  //     return;
+  //   }
+  //   const vehicledata: VehicleFormValues = {
+  //     vehicleSpec_id: selectedVehicleSpecId,
+  //     rental_rate: rentalRate,
+  //   };
+  //   try {
+  //     const response = await addVehicle(vehicledata).unwrap();
+  //     console.log(response);
+  //   } catch (error) {
+  //     console.error('Failed to add vehicle', error);
+  //   }
+  // };
 
   const handleDeleteSpecs = async (id: number) => {
     try {
@@ -189,7 +191,13 @@ const AllsVehSpecs: React.FC = () => {
               </div>
               <div className="flex justify-end gap-4">
                 <button type="submit" className="btn btn-primary p-2">Submit</button>
-                <button className="btn p-2">Close</button>
+                <button 
+            type="button" 
+            className="btn btn-danger p-2" 
+            onClick={() => (document.getElementById('my_modal_4') as HTMLDialogElement)?.close()}
+          >
+            Close
+          </button>
               </div>
             </form>
           </div>
@@ -223,7 +231,7 @@ const AllsVehSpecs: React.FC = () => {
                 <td className="py-2 px-4 border">{vehicleSpec.seating_capacity}</td>
                 <td className="py-2 px-4 border">{vehicleSpec.color}</td>
                 <td className="py-2 px-4 border">
-                  <button
+                  {/* <button
                     onClick={() => {
                       setSelectedVehicleSpecId(vehicleSpec.id);
                       (document.getElementById('my_modal_5') as HTMLDialogElement)?.showModal()
@@ -231,7 +239,7 @@ const AllsVehSpecs: React.FC = () => {
                     className="btn btn-info mr-2"
                   >
                     Add Car
-                  </button>
+                  </button> */}
                   <button onClick={() => handleDeleteSpecs(vehicleSpec.id)} className="btn btn-danger">Delete</button>
                 </td>
               </tr>
@@ -240,7 +248,7 @@ const AllsVehSpecs: React.FC = () => {
         </table>
       </div>
 
-      <dialog id="my_modal_5" className="modal-box w-3/4 max-w-full p-6">
+      {/* <dialog id="my_modal_5" className="modal-box w-3/4 max-w-full p-6">
   <div className="modal-box w-full max-w-full p-6 bg-base-200 rounded-lg shadow-lg">
     <h3 className="font-bold text-lg mb-4">Add Car</h3>
     <div className="modal-action">
@@ -270,7 +278,7 @@ const AllsVehSpecs: React.FC = () => {
       </form>
     </div>
   </div>
-</dialog>
+</dialog> */}
 
     </div>
   );

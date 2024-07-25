@@ -21,7 +21,7 @@ const Benefits: React.FC<BenefitsProps> = ({ data }) => {
   const navigate = useNavigate(); // Initialize navigate function
 
   const handleExploreClick = () => {
-    navigate('/dashboard/explore'); // Navigate to the explore page
+    navigate('/explore'); // Navigate to the explore page
   };
 
   return (

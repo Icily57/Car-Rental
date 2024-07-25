@@ -12,7 +12,7 @@ export const paymentApi = createApi({
             providesTags: ['Payment']
         }),
         getPaymentsByUserId: builder.query({
-            query: (userId) => `payment/${userId}`,
+            query: (userId) => `payment-by-id/${userId}`,
             providesTags: ['Payment']
         }),
         getPayment: builder.query({

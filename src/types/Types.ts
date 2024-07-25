@@ -3,6 +3,7 @@
 export interface AuthState {
     isAuthenticated: boolean;
     user: any;
+    user_id: number | null;
     token: string | null;
 }
 export type FormValues = {
