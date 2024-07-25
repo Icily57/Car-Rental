@@ -33,6 +33,7 @@ const AllsVehSpecs: React.FC = () => {
   const [addSpecs] = vehiclesApi.useAddSpecsMutation();
   const [deleteSpecs] = vehiclesApi.useDeleteSpecsMutation();
   const [addVehicle, { isLoading: addVehicleIsLoading }] = vehiclesApi.useAddCarMutation();
+  console.log(addVehicle)
   if (addVehicleIsLoading) {
     return <div className="text-center">Loading...</div>;
   }
@@ -77,6 +78,7 @@ const AllsVehSpecs: React.FC = () => {
       const response = await addSpecs(transformedData).unwrap();
       dialogRef.current?.close(); // Close dialog after submission
       toast.success('Vehicle specification added successfully');
+      console.log('response', response);
     } catch (error) {
       console.error('Failed to add vehicle spec', error);
       toast.error('Failed to add vehicle specification');
