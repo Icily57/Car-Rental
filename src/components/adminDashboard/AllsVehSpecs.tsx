@@ -17,6 +17,7 @@ interface VehicleSpecs {
   features: string;
   seating_capacity: number;
   color: string;
+  imageUrl?: string; // Added imageUrl
 }
 
 const AllsVehSpecs: React.FC = () => {
@@ -32,10 +33,9 @@ const AllsVehSpecs: React.FC = () => {
   const [addSpecs] = vehiclesApi.useAddSpecsMutation();
   const [deleteSpecs] = vehiclesApi.useDeleteSpecsMutation();
   const [addVehicle, { isLoading: addVehicleIsLoading }] = vehiclesApi.useAddCarMutation();
-  if (addVehicleIsLoading){
+  if (addVehicleIsLoading) {
     return <div className="text-center">Loading...</div>;
   }
-  console.log(addVehicle);
 
   useEffect(() => {
     if (allSpecVehicles) {
@@ -75,7 +75,6 @@ const AllsVehSpecs: React.FC = () => {
     };
     try {
       const response = await addSpecs(transformedData).unwrap();
-      console.log(response);
       dialogRef.current?.close(); // Close dialog after submission
       toast.success('Vehicle specification added successfully');
     } catch (error) {
@@ -203,6 +202,7 @@ const AllsVehSpecs: React.FC = () => {
               <th className="py-3 px-4 border-b font-semibold">Transmission</th>
               <th className="py-3 px-4 border-b font-semibold">Seats</th>
               <th className="py-3 px-4 border-b font-semibold">Color</th>
+              <th className="py-3 px-4 border-b font-semibold">Image</th> {/* New Column */}
               <th className="py-3 px-4 border-b font-semibold">Actions</th>
             </tr>
           </thead>
@@ -217,6 +217,11 @@ const AllsVehSpecs: React.FC = () => {
                 <td className="py-3 px-4 border-b">{vehicleSpec.transmission}</td>
                 <td className="py-3 px-4 border-b">{vehicleSpec.seating_capacity}</td>
                 <td className="py-3 px-4 border-b">{vehicleSpec.color}</td>
+                <td className="py-3 px-4 border-b">
+                  {vehicleSpec.imageUrl && (
+                    <img src={vehicleSpec.imageUrl} alt={`${vehicleSpec.manufacturer} ${vehicleSpec.model}`} className="w-24 h-16 object-cover" />
+                  )}
+                </td>
                 <td className="py-3 px-4 border-b">
                   <button onClick={() => handleDeleteSpecs(vehicleSpec.id)} className="btn btn-danger p-2 rounded-md">
                     Delete
