@@ -11,8 +11,8 @@ const Home = () => {
         <Navbar />
       <Container className="bg-blue-100 text-black flex flex-col gap-6">
         <Hero/>
-        <Benefits data={benefitOne} /> 
         <Fleet/>
+        <Benefits data={benefitOne} /> 
       </Container>
         <Footer />
     </div>

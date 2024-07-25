@@ -5,7 +5,7 @@ function AdminSideNav() {
     return (
         <ul className="menu bg-blue-50 min-w-full gap-2 text-black min-h-full">
             <li>
-                <Link to="users" className="flex items-center">
+                <Link to="" className="flex items-center">
                     <FaUsers className="mr-2" />
                     All Users
                 </Link>

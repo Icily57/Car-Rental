@@ -12,13 +12,9 @@ type TicketFormInputs = {
 };
 
 const Ticket: React.FC = () => {
-  const { register, handleSubmit, formState: { errors }, reset, setValue } = useForm<TicketFormInputs>();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<TicketFormInputs>();
   const [addTicket] = ticketsApi.useCreateTicketMutation();
-  const [updateTicket] = ticketsApi.useUpdateTicketMutation();
-  const [deleteTicket] = ticketsApi.useDeleteTicketMutation();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [editMode, setEditMode] = useState(false);
-  const [currentTicket, setCurrentTicket] = useState<any>(null);
 
   const { user } = useSelector((state: RootState) => state.auth);
   const user_id = user?.user.id;
@@ -31,38 +27,13 @@ const Ticket: React.FC = () => {
     };
 
     try {
-      if (editMode && currentTicket) {
-        await updateTicket({ ...ticket, id: currentTicket.id }).unwrap();
-        toast('Ticket updated successfully');
-      } else {
-        await addTicket(ticket).unwrap();
-        toast('Ticket submitted successfully');
-      }
+      await addTicket(ticket).unwrap();
+      toast.success('Ticket submitted successfully');
       reset();
       setIsCreateModalOpen(false);
-      setEditMode(false);
-      setCurrentTicket(null);
       refetch();
     } catch (err) {
-      toast('Failed to submit ticket');
-    }
-  };
-
-  const handleEdit = (ticket: any) => {
-    setEditMode(true);
-    setCurrentTicket(ticket);
-    setIsCreateModalOpen(true);
-    setValue('subject', ticket.subject);
-    setValue('description', ticket.description);
-  };
-
-  const handleDelete = async (id: number) => {
-    try {
-      await deleteTicket(id).unwrap();
-      toast('Ticket deleted successfully');
-      refetch();
-    } catch (err) {
-      toast('Failed to delete ticket');
+      toast.error('Failed to submit ticket');
     }
   };
 
@@ -76,7 +47,7 @@ const Ticket: React.FC = () => {
     <div className="bg-cyan-100 min-h-screen p-6">
       <Toaster />
       <div className="max-w-md mx-auto mt-10 p-6 border border-gray-300 rounded-lg shadow-md bg-white">
-        <h2 className="text-2xl font-bold mb-4">{editMode ? 'Edit Ticket' : 'Create a Ticket'}</h2>
+        <h2 className="text-2xl font-bold mb-4">Create a Ticket</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
             <label htmlFor="subject" className="block text-sm font-medium text-gray-700">Subject</label>
@@ -103,7 +74,7 @@ const Ticket: React.FC = () => {
               type="submit"
               className="w-full px-4 py-2 bg-blue-500 text-white font-semibold rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              {editMode ? 'Update' : 'Submit'}
+              Submit
             </button>
           </div>
         </form>
@@ -118,7 +89,6 @@ const Ticket: React.FC = () => {
                 <tr>
                   <th className="px-6 py-3 border-b text-left leading-4 text-black text-2xl tracking-wider">Subject</th>
                   <th className="px-6 py-3 border-b text-left leading-4 text-black text-2xl tracking-wider">Description</th>
-                  <th className="px-6 py-3 border-b text-left leading-4 text-black text-2xl tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -126,20 +96,6 @@ const Ticket: React.FC = () => {
                   <tr key={ticket.id} className="hover:bg-gray-100 transition-colors duration-200">
                     <td className="px-6 py-4 border">{ticket.subject}</td>
                     <td className="px-6 py-4 border">{ticket.description}</td>
-                    <td className="px-6 py-4 border flex space-x-2">
-                      <button
-                        className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition duration-200"
-                        onClick={() => handleEdit(ticket)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-200"
-                        onClick={() => handleDelete(ticket.id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
                   </tr>
                 ))}
               </tbody>
