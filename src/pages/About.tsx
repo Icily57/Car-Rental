@@ -19,6 +19,14 @@ const About: React.FC = () => {
     { name: 'Joan Orange', position: 'Customer Support', image: 'https://randomuser.me/api/portraits/women/5.jpg' },
   ];
 
+  const services = [
+    { name: 'Wide Range of Vehicles', description: 'Choose from a variety of vehicles including sedans, SUVs, and luxury cars.' },
+    { name: 'Flexible Booking Options', description: 'Book your vehicle for short-term or long-term rentals with flexible options.' },
+    { name: '24/7 Customer Support', description: 'Get assistance anytime with our round-the-clock customer support service.' },
+    { name: 'Easy Online Booking', description: 'Use our user-friendly online platform to book your vehicle quickly and easily.' },
+    { name: 'Competitive Pricing', description: 'Enjoy affordable rates with no hidden fees or extra charges.' },
+  ];
+
   return (
     <>
       <Navbar />
@@ -40,6 +48,18 @@ const About: React.FC = () => {
               <li className="bg-gray-100 p-2 rounded mb-2 transition duration-300 ease-in-out transform hover:scale-105">Responsive user interface</li>
             </ol>
             <p className='font-semibold text-gray-700'>Thank you for choosing our platform. We strive to provide the best rental experience for all our users.</p>
+            
+            {/* Our Services Section */}
+            <h2 className="text-2xl text-blue-600 font-bold my-4">Our Services</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {services.map((service, index) => (
+                <div key={index} className="bg-white p-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2">{service.name}</h3>
+                  <p className="text-gray-600">{service.description}</p>
+                </div>
+              ))}
+            </div>
+            
             <h2 className="text-2xl text-blue-600 font-bold my-4">Our Team</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {staffData.map((staff, index) => (
