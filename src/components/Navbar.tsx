@@ -39,7 +39,7 @@ const Navbar = () => {
             <Link to="/about"><li><a> About Us</a></li> </Link>         
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">Enuma</a>
+        <a className="btn btn-ghost text-xl">Enuma Car Rental Services</a>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
