@@ -11,11 +11,11 @@ const AdminHome = () => {
 
   return (
     <div >
-      <Container className="bg-base-300 flex flex-col gap-6">
         <AdminNavbar />
+      <Container className="bg-blue-100 flex flex-col gap-6">
         {/* <AdminDashboard/> */}
-        <p className="text-gray-50 font-extrabold text-3xl">Hello {user.user.full_name},</p>
-        <p className="text-gray-50 font-semibold text-2xl">Welcome to your Analysis page</p>
+        <p className="text-black font-extrabold text-3xl">Hello {user.user.full_name},</p>
+        <p className="text-black font-semibold text-2xl">Welcome to your Management page</p>
         <Analytics/>
       </Container>
         <Footer />

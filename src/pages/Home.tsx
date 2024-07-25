@@ -7,12 +7,12 @@ import { benefitOne } from "../utils/data"
 const Home = () => {
   return (
     <div>
-      <Container className="bg-base-300 flex flex-col gap-6">
         <Navbar />
+      <Container className="bg-blue-100 text-black flex flex-col gap-6">
         <Hero/>
         <Benefits data={benefitOne} /> 
-        <Footer />
       </Container>
+        <Footer />
     </div>
   )
 }

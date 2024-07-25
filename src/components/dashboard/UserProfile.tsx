@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import cover from '../../assets/cover-01.png';
 import { RootState } from "../../app/store";
 import { useSelector } from "react-redux";
 // import Navbar from "../Navbar";
@@ -43,82 +42,78 @@ const UserProfile: React.FC = () => {
   return (
     <>
       {/* <Navbar /> */}
-      <div
-        className="h-screen flex items-center justify-center bg-cover bg-center"
-        style={{ backgroundImage: `url(${cover})` }}
-      >
-        <div className="w-full max-w-4xl bg-white bg-opacity-90 p-6 rounded-lg shadow-lg">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">My Profile</h1>
+      <div>
+        <div className="w-full max-w-4xl bg-cyan-100 bg-opacity-80 p-8 rounded-lg shadow-xl">
+          <h1 className="text-4xl font-bold text-gray-900 text-center mb-6">My Profile</h1>
           <div className="flex items-center mb-6">
-            {/* Profile picture placeholder */}
-            <div className="w-24 h-24 bg-gray-300 rounded-full overflow-hidden flex items-center justify-center">
-              <span className="text-white text-2xl font-semibold">{user?.user.full_name?.[0]}</span>
+            <div className="w-32 h-32 bg-black rounded-full overflow-hidden flex items-center justify-center">
+              <span className="text-4xl text-white font-semibold">{user?.user.full_name?.[0]}</span>
             </div>
-            <div className="ml-4">
-              <h2 className="text-2xl font-semibold">{user?.user.full_name}</h2>
-              <p className="text-gray-600">{user?.user.email}</p>
+            <div className="ml-6">
+              <h2 className="text-3xl font-semibold text-gray-800">{user?.user.full_name}</h2>
+              <p className="text-xl text-gray-600">{user?.user.email}</p>
             </div>
           </div>
-          <div className="space-y-4">
-            <div className="flex flex-col space-y-2">
-              <label htmlFor="full_name" className="text-sm font-medium text-gray-600">Full Name</label>
+          <div className="space-y-6">
+            <div className="flex flex-col space-y-4">
+              <label htmlFor="full_name" className="text-sm font-semibold text-gray-700">Full Name</label>
               <input
                 type="text"
                 id="full_name"
                 name="full_name"
                 value={formData.full_name}
                 onChange={handleInputChange}
-                className={`px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${isEditing ? '' : 'bg-gray-100'}`}
+                className={`px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition ease-in-out duration-300 ${isEditing ? '' : 'bg-gray-100'}`}
                 readOnly={!isEditing}
               />
             </div>
-            <div className="flex flex-col space-y-2">
-              <label htmlFor="email" className="text-sm font-medium text-gray-600">Email</label>
+            <div className="flex flex-col space-y-4">
+              <label htmlFor="email" className="text-sm font-semibold text-gray-700">Email</label>
               <input
                 type="email"
                 id="email"
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className={`px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${isEditing ? '' : 'bg-gray-100'}`}
+                className={`px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition ease-in-out duration-300 ${isEditing ? '' : 'bg-gray-100'}`}
                 readOnly={!isEditing}
               />
             </div>
-            <div className="flex flex-col space-y-2">
-              <label htmlFor="contact_phone" className="text-sm font-medium text-gray-600">Contact Phone</label>
+            <div className="flex flex-col space-y-4">
+              <label htmlFor="contact_phone" className="text-sm font-semibold text-gray-700">Contact Phone</label>
               <input
                 type="text"
                 id="contact_phone"
                 name="contact_phone"
                 value={formData.contact_phone}
                 onChange={handleInputChange}
-                className={`px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${isEditing ? '' : 'bg-gray-100'}`}
+                className={`px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition ease-in-out duration-300 ${isEditing ? '' : 'bg-gray-100'}`}
                 readOnly={!isEditing}
               />
             </div>
-            <div className="flex flex-col space-y-2">
-              <label htmlFor="address" className="text-sm font-medium text-gray-600">Address</label>
+            <div className="flex flex-col space-y-4">
+              <label htmlFor="address" className="text-sm font-semibold text-gray-700">Address</label>
               <input
                 type="text"
                 id="address"
                 name="address"
                 value={formData.address}
                 onChange={handleInputChange}
-                className={`px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 ${isEditing ? '' : 'bg-gray-100'}`}
+                className={`px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition ease-in-out duration-300 ${isEditing ? '' : 'bg-gray-100'}`}
                 readOnly={!isEditing}
               />
             </div>
-            <div className="flex justify-end mt-4 space-x-4">
+            <div className="flex justify-end space-x-4 mt-6">
               {isEditing ? (
                 <>
                   <button
-                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                    className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition ease-in-out duration-300"
                     onClick={handleSave}
                   >
                     Save
                   </button>
                   <button
-                    className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                    className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg transition ease-in-out duration-300"
                     onClick={handleCancel}
                   >
                     Cancel
@@ -126,7 +121,7 @@ const UserProfile: React.FC = () => {
                 </>
               ) : (
                 <button
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg transition ease-in-out duration-300"
                   onClick={handleEditClick}
                 >
                   Edit

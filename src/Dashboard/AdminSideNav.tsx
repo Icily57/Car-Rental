@@ -1,47 +1,28 @@
-
-import {  LogOut } from "lucide-react"
 import { Link } from "react-router-dom"
 function AdminSideNav() {
     return (
-        <ul className="menu bg-base-200  min-w-full gap-2 text-base-content min-h-full">
-            {/* <li>               
-                    <ul className="flex flex-col">
-                        <li> <Link to="">Analytics</Link></li>
-                    </ul>
-                
-            </li>           */}
+        <ul className="menu bg-blue-50  min-w-full gap-2 text-black min-h-full">
+           
             <li>
                     <ul>
                         <li><Link to="">All Users</Link></li>
                     </ul>
             </li>
             <li>
-                {/* <details >
-                    <summary><Users />Bookings</summary> */}
                     <ul>
                         <li><Link to="bookings">Bookings</Link></li>
                     </ul>
                     <ul>
                         <li><Link to="payments">Payments</Link></li>
                     </ul>
-                {/* </details> */}
             </li>
             <li>
-                {/* <details > */}
-                    {/* <summary><Users />vehicles </summary> */}
-                    {/* <ul>
-                        <li><Link to="vehicles"> Vehicles</Link></li>
-                    </ul> */}
                     <ul>
                         <li><Link to="vehicles-specs"> Vehicles Specs</Link></li>
                     </ul>
-                {/* </details> */}
             </li>
             <li>
                 <Link to="me">Me</Link>
-            </li>
-            <li>
-                <Link to="#"><LogOut />Logout</Link>
             </li>
             <li>
                 <Link to="/">

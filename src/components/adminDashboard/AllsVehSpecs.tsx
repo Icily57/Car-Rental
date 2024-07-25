@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { vehiclesApi } from '../../features/api/vehiclesApi';
 import { useForm } from 'react-hook-form';
 import { VehicleSpecsFormValues } from '../../types/Types';
 import axios from 'axios';
-import {cloudinaryConfig} from '../../cloudinary/cloudinary';
+import { cloudinaryConfig } from '../../cloudinary/cloudinary';
+import { toast, Toaster } from 'sonner';
 
 interface VehicleSpecs {
   id: number;
@@ -18,47 +19,23 @@ interface VehicleSpecs {
   color: string;
 }
 
-// interface VehicleFormValues {
-//   rental_rate: number;
-//   vehicleSpec_id: number;
-// }
-
 const AllsVehSpecs: React.FC = () => {
-  // const preset_key = "zkm9gt8i";
-  // const cloud_name = "dlci2voox";
+  const dialogRef = useRef<HTMLDialogElement>(null); // Ref for the dialog
   const { data: allSpecVehicles, isError, isLoading: vehSpecsLoading } = vehiclesApi.useGetVehicleSpecsQuery(undefined, {
     refetchOnMountOrArgChange: true,
     pollingInterval: 60000,
   });
 
-  const [imageUrl, setImageUrl] = useState<string>("");
+  const [imageUrl, setImageUrl] = useState<string>('');
   const { register, handleSubmit } = useForm<VehicleSpecsFormValues>();
-  // const [selectedVehicleSpecId, setSelectedVehicleSpecId] = useState<number>(0);
-  // const [rentalRate, setRentalRate] = useState<number>(0);
   const [vehiclesSpecs, setVehiclesSpecs] = useState<VehicleSpecs[]>([]);
   const [addSpecs] = vehiclesApi.useAddSpecsMutation();
   const [deleteSpecs] = vehiclesApi.useDeleteSpecsMutation();
   const [addVehicle, { isLoading: addVehicleIsLoading }] = vehiclesApi.useAddCarMutation();
-  console.log(addVehicle);
-
-  if (addVehicleIsLoading) {
-    return <div>Loading...</div>;
+  if (addVehicleIsLoading){
+    return <div className="text-center">Loading...</div>;
   }
-
-  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", cloudinaryConfig.uploadPreset);
-    try {
-      const res = await axios.post(`https://api.cloudinary.com/v1_1/${cloudinaryConfig.cloudName}/image/upload`, formData);
-      setImageUrl(res.data.secure_url);
-    } catch (error) {
-      console.error('Failed to upload image', error);
-    }
-  };
+  console.log(addVehicle);
 
   useEffect(() => {
     if (allSpecVehicles) {
@@ -66,220 +43,191 @@ const AllsVehSpecs: React.FC = () => {
     }
   }, [allSpecVehicles]);
 
+  useEffect(() => {
+    if (isError) {
+      toast.error('Error loading vehicle specs');
+    }
+  }, [isError]);
+
+  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', cloudinaryConfig.uploadPreset);
+    try {
+      const res = await axios.post(`https://api.cloudinary.com/v1_1/${cloudinaryConfig.cloudName}/image/upload`, formData);
+      setImageUrl(res.data.secure_url);
+    } catch (error) {
+      console.error('Failed to upload image', error);
+      toast.error('Failed to upload image');
+    }
+  };
+
   const onSubmit = async (data: VehicleSpecsFormValues) => {
     data.imageUrl = imageUrl;
 
     const transformedData = {
       ...data,
       year: Number(data.year),
-      seating_capacity: Number(data.seating_capacity)
+      seating_capacity: Number(data.seating_capacity),
     };
     try {
       const response = await addSpecs(transformedData).unwrap();
       console.log(response);
+      dialogRef.current?.close(); // Close dialog after submission
+      toast.success('Vehicle specification added successfully');
     } catch (error) {
       console.error('Failed to add vehicle spec', error);
+      toast.error('Failed to add vehicle specification');
     }
   };
-
-  // const handleAddVehicle = async () => {
-  //   if (rentalRate === 0) {
-  //     alert('Please enter rental rate');
-  //     return;
-  //   }
-  //   const vehicledata: VehicleFormValues = {
-  //     vehicleSpec_id: selectedVehicleSpecId,
-  //     rental_rate: rentalRate,
-  //   };
-  //   try {
-  //     const response = await addVehicle(vehicledata).unwrap();
-  //     console.log(response);
-  //   } catch (error) {
-  //     console.error('Failed to add vehicle', error);
-  //   }
-  // };
 
   const handleDeleteSpecs = async (id: number) => {
     try {
       await deleteSpecs(id).unwrap();
-      setVehiclesSpecs(vehiclesSpecs.filter(spec => spec.id !== id));
+      setVehiclesSpecs(vehiclesSpecs.filter((spec) => spec.id !== id));
+      toast.success('Vehicle specification deleted successfully');
     } catch (error) {
       console.error('Failed to delete vehicle spec', error);
+      toast.error('Failed to delete vehicle specification');
     }
   };
 
   if (vehSpecsLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (isError) {
-    return <div>Error loading vehicle specs</div>;
+    return <div className="text-center">Loading...</div>;
   }
 
   return (
-    <div> 
-      <button className="btn" onClick={() => (document.getElementById('my_modal_4') as HTMLDialogElement)?.showModal()}>
+    <div className="p-6 bg-blue-100 min-h-screen">
+      <h1 className="text-3xl font-bold mb-6 text-center">All Vehicle Specifications</h1>
+
+      <button
+        className="btn btn-primary mb-4"
+        onClick={() => (document.getElementById('my_modal_4') as HTMLDialogElement)?.showModal()}
+      >
         Add Specs
       </button>
       <dialog id="my_modal_4" className="modal-box w-3/4 max-w-full p-6">
-        <div className="modal-box w-full max-w-full p-6 bg-base-200 rounded-lg shadow-lg">
-          <h3 className="font-bold text-lg mb-4">Add Spec!</h3>
-          <div className="modal-action">
-            <form method="dialog" className="w-full" onSubmit={handleSubmit(onSubmit)}>
-              <div className="flex flex-wrap gap-4 mb-4">
-                <input
-                  type="text"
-                  {...register('manufacturer', { required: true })}
-                  placeholder="Manufacturer"
-                  className="input input-bordered w-1/3 p-2 mb-2"
-                />
-                <input
-                  type="text"
-                  {...register('model', { required: true })}
-                  placeholder="Model"
-                  className="input input-bordered w-1/3 p-2 mb-2"
-                />
-                <input
-                  type="text"
-                  {...register('year', { required: true })}
-                  placeholder="Year"
-                  className="input input-bordered w-1/3 p-2 mb-2"
-                />
-                <input
-                  type="text"
-                  {...register('fuel_type', { required: true })}
-                  placeholder="Fuel Type"
-                  className="input input-bordered w-1/3 p-2 mb-2"
-                />
-                <input
-                  type="text"
-                  {...register('engine_capacity', { required: true })}
-                  placeholder="Engine Capacity"
-                  className="input input-bordered w-1/3 p-2 mb-2"
-                />
-                <input
-                  type="text"
-                  {...register('transmission', { required: true })}
-                  placeholder="Transmission"
-                  className="input input-bordered w-1/3 p-2 mb-2"
-                />
-                <input
-                  type="text"
-                  {...register('seating_capacity', { required: true })}
-                  placeholder="Seating Capacity"
-                  className="input input-bordered w-1/3 p-2 mb-2"
-                />
-                <input
-                  type="text"
-                  {...register('color', { required: true })}
-                  placeholder="Color"
-                  className="input input-bordered w-1/3 p-2 mb-2"
-                />
-                <input
-                  type="text"
-                  {...register('features', { required: true })}
-                  placeholder="Features"
-                  className="input input-bordered w-1/3 p-2 mb-2"
-                />
+        <div className="modal-box w-full max-w-4xl bg-white rounded-lg shadow-lg p-6">
+          <h3 className="text-2xl font-bold mb-4">Add New Vehicle Specification</h3>
+          <form method="dialog" className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input
+                type="text"
+                {...register('manufacturer', { required: true })}
+                placeholder="Manufacturer"
+                className="input input-bordered w-full p-3 rounded-md border-gray-300 shadow-sm"
+              />
+              <input
+                type="text"
+                {...register('model', { required: true })}
+                placeholder="Model"
+                className="input input-bordered w-full p-3 rounded-md border-gray-300 shadow-sm"
+              />
+              <input
+                type="text"
+                {...register('year', { required: true })}
+                placeholder="Year"
+                className="input input-bordered w-full p-3 rounded-md border-gray-300 shadow-sm"
+              />
+              <input
+                type="text"
+                {...register('fuel_type', { required: true })}
+                placeholder="Fuel Type"
+                className="input input-bordered w-full p-3 rounded-md border-gray-300 shadow-sm"
+              />
+              <input
+                type="text"
+                {...register('engine_capacity', { required: true })}
+                placeholder="Engine Capacity"
+                className="input input-bordered w-full p-3 rounded-md border-gray-300 shadow-sm"
+              />
+              <input
+                type="text"
+                {...register('transmission', { required: true })}
+                placeholder="Transmission"
+                className="input input-bordered w-full p-3 rounded-md border-gray-300 shadow-sm"
+              />
+              <input
+                type="text"
+                {...register('seating_capacity', { required: true })}
+                placeholder="Seating Capacity"
+                className="input input-bordered w-full p-3 rounded-md border-gray-300 shadow-sm"
+              />
+              <input
+                type="text"
+                {...register('color', { required: true })}
+                placeholder="Color"
+                className="input input-bordered w-full p-3 rounded-md border-gray-300 shadow-sm"
+              />
+              <input
+                type="text"
+                {...register('features', { required: true })}
+                placeholder="Features"
+                className="input input-bordered w-full p-3 rounded-md border-gray-300 shadow-sm"
+              />
+              <div className="col-span-1">
                 <input
                   type="file"
                   onChange={handleFile}
-                  placeholder="Image URL"
-                  className="input input-bordered w-1/3 p-2 mb-2"
+                  className="input input-bordered w-full p-2 mb-2"
                 />
-                <img src={imageUrl} alt="" width={50} height={50} />
+                {imageUrl && <img src={imageUrl} alt="Uploaded" className="mt-2 rounded-md shadow-sm" width={150} />}
               </div>
-              <div className="flex justify-end gap-4">
-                <button type="submit" className="btn btn-primary p-2">Submit</button>
-                <button 
-            type="button" 
-            className="btn btn-danger p-2" 
-            onClick={() => (document.getElementById('my_modal_4') as HTMLDialogElement)?.close()}
-          >
-            Close
-          </button>
-              </div>
-            </form>
-          </div>
+            </div>
+            <div className="flex justify-end gap-4 mt-6">
+              <button type="submit" className="btn btn-primary p-3 rounded-md">Submit</button>
+              <button
+                type="button"
+                className="btn btn-secondary p-3 rounded-md"
+                onClick={() => (document.getElementById('my_modal_4') as HTMLDialogElement)?.close()}
+              >
+                Close
+              </button>
+            </div>
+          </form>
         </div>
       </dialog>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white rounded-lg shadow-md">
-          <thead>
+      <div className="overflow-x-auto mt-6">
+        <table className="min-w-full bg-white rounded-lg shadow-md border border-gray-200">
+          <thead className="bg-gray-200">
             <tr>
-              <th className="py-2 px-4 bg-gray-200 font-bold">ID</th>
-              <th className="py-2 px-4 bg-gray-200 font-bold">Name</th>
-              <th className="py-2 px-4 bg-gray-200 font-bold">Model</th>
-              <th className="py-2 px-4 bg-gray-200 font-bold">Year</th>
-              <th className="py-2 px-4 bg-gray-200 font-bold">Fuel Type</th>
-              <th className="py-2 px-4 bg-gray-200 font-bold">Transmission</th>
-              <th className="py-2 px-4 bg-gray-200 font-bold">Seats</th>
-              <th className="py-2 px-4 bg-gray-200 font-bold">Color</th>
-              <th className="py-2 px-4 bg-gray-200 font-bold">Actions</th>
+              <th className="py-3 px-4 border-b font-semibold">ID</th>
+              <th className="py-3 px-4 border-b font-semibold">Manufacturer</th>
+              <th className="py-3 px-4 border-b font-semibold">Model</th>
+              <th className="py-3 px-4 border-b font-semibold">Year</th>
+              <th className="py-3 px-4 border-b font-semibold">Fuel Type</th>
+              <th className="py-3 px-4 border-b font-semibold">Transmission</th>
+              <th className="py-3 px-4 border-b font-semibold">Seats</th>
+              <th className="py-3 px-4 border-b font-semibold">Color</th>
+              <th className="py-3 px-4 border-b font-semibold">Actions</th>
             </tr>
           </thead>
           <tbody>
             {vehiclesSpecs.map((vehicleSpec) => (
-              <tr key={vehicleSpec.id}>
-                <td className="py-2 px-4 border">{vehicleSpec.id}</td>
-                <td className="py-2 px-4 border">{vehicleSpec.manufacturer}</td>
-                <td className="py-2 px-4 border">{vehicleSpec.model}</td>
-                <td className="py-2 px-4 border">{vehicleSpec.year}</td>
-                <td className="py-2 px-4 border">{vehicleSpec.fuel_type}</td>
-                <td className="py-2 px-4 border">{vehicleSpec.transmission}</td>
-                <td className="py-2 px-4 border">{vehicleSpec.seating_capacity}</td>
-                <td className="py-2 px-4 border">{vehicleSpec.color}</td>
-                <td className="py-2 px-4 border">
-                  {/* <button
-                    onClick={() => {
-                      setSelectedVehicleSpecId(vehicleSpec.id);
-                      (document.getElementById('my_modal_5') as HTMLDialogElement)?.showModal()
-                    }}
-                    className="btn btn-info mr-2"
-                  >
-                    Add Car
-                  </button> */}
-                  <button onClick={() => handleDeleteSpecs(vehicleSpec.id)} className="btn btn-danger">Delete</button>
+              <tr key={vehicleSpec.id} className="hover:bg-gray-50 transition duration-200">
+                <td className="py-3 px-4 border-b">{vehicleSpec.id}</td>
+                <td className="py-3 px-4 border-b">{vehicleSpec.manufacturer}</td>
+                <td className="py-3 px-4 border-b">{vehicleSpec.model}</td>
+                <td className="py-3 px-4 border-b">{vehicleSpec.year}</td>
+                <td className="py-3 px-4 border-b">{vehicleSpec.fuel_type}</td>
+                <td className="py-3 px-4 border-b">{vehicleSpec.transmission}</td>
+                <td className="py-3 px-4 border-b">{vehicleSpec.seating_capacity}</td>
+                <td className="py-3 px-4 border-b">{vehicleSpec.color}</td>
+                <td className="py-3 px-4 border-b">
+                  <button onClick={() => handleDeleteSpecs(vehicleSpec.id)} className="btn btn-danger p-2 rounded-md">
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-
-      {/* <dialog id="my_modal_5" className="modal-box w-3/4 max-w-full p-6">
-  <div className="modal-box w-full max-w-full p-6 bg-base-200 rounded-lg shadow-lg">
-    <h3 className="font-bold text-lg mb-4">Add Car</h3>
-    <div className="modal-action">
-      <form className="w-full" onSubmit={(e) => {
-        e.preventDefault();
-        handleAddVehicle();
-      }}>
-        <div className="flex flex-wrap gap-4 mb-4">
-          <input
-            type="number"
-            value={rentalRate}
-            onChange={(e) => setRentalRate(Number(e.target.value))}
-            placeholder="Rental Rate"
-            className="input input-bordered w-1/3 p-2 mb-2"
-          />
-        </div>
-        <div className="flex justify-end gap-4">
-          <button type="submit" className="btn btn-primary p-2">Submit</button>
-          <button 
-            type="button" 
-            className="btn btn-danger p-2" 
-            onClick={() => (document.getElementById('my_modal_5') as HTMLDialogElement)?.close()}
-          >
-            Close
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</dialog> */}
-
+      <Toaster position="top-right" />
     </div>
   );
 };

@@ -27,28 +27,6 @@ const benefitOne = {
     ],
 }
 
-// const benefitTwo = {
-//     title: "Own your dream car today!",
-//     desc: "Explore additional features and services that make our platform unique and user-friendly. Enjoy a personalized and efficient guidelines on how to live your dream using these advanced functionalities.",
-//     image: Benefit3,
-//     bullets: [
-//         {
-//             title: "Mobile-Friendly Design",
-//             desc: "Access and explore all car brands  on any device with our responsive design.",
-//             icon: <DevicePhoneMobileIcon />,
-//         },
-//         {
-//             title: "Advanced Search and Filter",
-//             desc: "Quickly find the car model you want with our powerful search and filter tools.",
-//             icon: <SearchCode />,
-//         },
-//         {
-//             title: "Personalized Settings",
-//             desc: "Switch between dark and light modes for a comfortable experience anytime.",
-//             icon: <SunIcon />,
-//         },
-//     ],
-// };
 
 
 export { benefitOne};//, benefitTwo 

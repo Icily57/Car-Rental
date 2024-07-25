@@ -7,6 +7,7 @@ export interface AuthState {
     token: string | null;
 }
 export type FormValues = {
+    id: number;
     email: string;
     full_name: string;
     contact_phone:string,

@@ -1,0 +1,36 @@
+/* Explore.css */
+.card {
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.card-image {
+  height: 200px;
+  width: 100%;
+  object-fit: cover;
+  border-top-left-radius: 0.75rem;
+  border-top-right-radius: 0.75rem;
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+.card-title {
+  margin-bottom: 0.5rem;
+}
+
+.card-actions .btn {
+  padding: 0.5rem 1rem;
+  background-color: #1d4ed8;
+  color: #ffffff;
+  text-align: center;
+  border-radius: 0.375rem;
+  text-decoration: none;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.card-actions .btn:hover {
+  background-color: #2563eb;
+}

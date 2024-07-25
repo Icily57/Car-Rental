@@ -14,7 +14,7 @@ const AdminNavbar = () => {
   }
 
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-blue-50 text-black">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -40,7 +40,7 @@ const AdminNavbar = () => {
 
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">Enuma</a>
+        <a className="btn btn-ghost text-xl">Enuma Car Rental Services</a>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
@@ -72,7 +72,7 @@ const AdminNavbar = () => {
            
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+              className="menu menu-sm dropdown-content bg-blue-50 rounded-box z-[1] mt-3 w-52 p-2 shadow">
               {/* <li><a>Profile</a></li> */}
               <li>
                 <button onClick={handleLogout}>

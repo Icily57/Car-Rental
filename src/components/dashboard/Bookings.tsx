@@ -1,9 +1,11 @@
 import React from 'react';
 import { bookingApi } from '../../features/api/bookingApi';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from "../../app/store";
-import  {loadStripe} from '@stripe/stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import axios from 'axios';
+import { AiOutlineLoading3Quarters } from 'react-icons/ai'; // Importing an icon for the loading spinner
+
 const stripePromise = loadStripe('pk_test_51PcnDjRsM9MD60MUSokKWQYDKHJRX6QozjatiXn2BLZkcDSNJabkwtXnXgExy9MRKypMnbxpVuXiND5mWsz3IMGO00jsYR73Rd');
 
 interface UserBooking {
@@ -16,72 +18,66 @@ interface UserBooking {
 }
 
 const Booking: React.FC = () => {
-  const dispatch = useDispatch();
-  console.log(dispatch);
+  // const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
   const user_id = user?.user.id;
-
-  console.log(user_id);
+  const [deleteBooking] = bookingApi.useDeleteBookingMutation();
 
   const { data: userBookings, error, isLoading } = bookingApi.useGetBookingsByUserIdQuery(user_id);
-console.log(userBookings);
+
+  const handleDelete = async (id: number) => {
+    try {
+      const response = await deleteBooking(id).unwrap();
+      console.log('Deleted booking with ID:', id);
+      console.log(response);
+    } catch (error) {
+      console.error('Failed to delete booking', error);
+    }
+  };
+
+  const pendingBookings = userBookings?.filter((booking: UserBooking) => booking.booking_status === 'pending');
+  const confirmedBookings = userBookings?.filter((booking: UserBooking) => booking.booking_status === 'approved');
+
+  const handleCheckout = async (id: number) => {
+    const booking = pendingBookings?.find((booking: UserBooking) => booking.id === id);
+    try {
+      const stripe = await stripePromise;
+      const header = { 'Content-Type': 'application/json' };
+      const checkoutResponse = await axios.post('http://localhost:8000/checkout-session', JSON.stringify(booking), { headers: header });
+      const session = await checkoutResponse.data;
+      await stripe?.redirectToCheckout({ sessionId: session.id });
+    } catch (error) {
+      console.error('Failed to checkout:', error);
+    }
+  };
+
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="flex justify-center items-center h-screen bg-cyan-100">
+      <AiOutlineLoading3Quarters className="animate-spin text-4xl text-blue-500" />
+    </div>;
   }
 
   if (error) {
-    return <div>Error loading bookings</div>;
+    return <div className="text-center text-red-500 bg-cyan-100">Error loading bookings. Please try again later.</div>;
   }
-  const handleDelete=async(id: number)=> {
-    console.log(id);
-    // Implement delete booking functionality
-  }
-  // Filter pending bookings
-  const pendingBookings = userBookings?.filter((booking: UserBooking) => booking.booking_status === 'pending');
 
-  // Filter confirmed bookings for the table
-  const confirmedBookings = userBookings?.filter((booking: UserBooking) => booking.booking_status === 'approved');
-
-
-  const handleCheckout=async(id: number)=> {
-   const booking = pendingBookings.find((booking: { id: number; })=>booking.id === id)
-   console.log(booking);
-    try {
-      const stripe = await stripePromise;
-  
-      const header = {'Content-Type': 'application/json'};
-  
-      const checkoutResponse = await axios.post('http://localhost:8000/checkout-session', JSON.stringify(booking) ,{headers: header});
-      const session = await checkoutResponse.data;
-  
-      await stripe?.redirectToCheckout({sessionId: session.id});
-      console.log('Checkout session:', session);
-    }
-    catch (error) {
-      console.error('Failed to checkout:', error);
-      
-  }
-}
-
-  
   return (
-    <div className="container mx-auto py-8">
+    <div className="container mx-auto py-8 px-4 bg-cyan-100">
       <h1 className="text-3xl font-bold text-center mb-8">My Bookings</h1>
       
-      {/* Display pending bookings in cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         {pendingBookings?.map((booking: UserBooking) => (
-          <div key={booking.id} className="bg-white rounded-lg shadow-md p-4">
+          <div key={booking.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200">
             <h2 className="text-xl font-bold mb-2">Booking ID: {booking.id}</h2>
             <p><strong>Booking Date:</strong> {booking.booking_date}</p>
             <p><strong>Return Date:</strong> {booking.return_date}</p>
-            <p><strong>Status:</strong> {booking.booking_status}</p>
+            <p><strong>Status:</strong> <span className="text-yellow-600">{booking.booking_status}</span></p>
             <p><strong>Total Amount:</strong> ${booking.total_amount}</p>
             <div className="flex justify-between mt-4">
-              <button className="btn btn-danger" onClick={() => handleDelete(booking.vehicle_id)}>
+              <button className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition duration-200 ease-in-out transform hover:scale-105" onClick={() => handleDelete(booking.id)}>
                 Delete
               </button>
-              <button className="btn btn-info" onClick={() => handleCheckout(booking.id)}>
+              <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200 ease-in-out transform hover:scale-105" onClick={() => handleCheckout(booking.id)}>
                 Checkout
               </button>
             </div>
@@ -89,21 +85,20 @@ console.log(userBookings);
         ))}
       </div>
 
-      {/* Display confirmed bookings in a table */}
       <h2 className="text-2xl font-bold text-center mb-4">Confirmed Bookings</h2>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white rounded-lg shadow-md">
           <thead>
             <tr>
-              <th className="py-2 px-4 bg-gray-200 font-bold">Booking ID</th>
-              <th className="py-2 px-4 bg-gray-200 font-bold">Booking Date</th>
-              <th className="py-2 px-4 bg-gray-200 font-bold">Return Date</th>
-              <th className="py-2 px-4 bg-gray-200 font-bold">Total Amount</th>
+              <th className="py-3 px-4 bg-gray-200 font-bold">Booking ID</th>
+              <th className="py-3 px-4 bg-gray-200 font-bold">Booking Date</th>
+              <th className="py-3 px-4 bg-gray-200 font-bold">Return Date</th>
+              <th className="py-3 px-4 bg-gray-200 font-bold">Total Amount</th>
             </tr>
           </thead>
           <tbody>
             {confirmedBookings?.map((booking: UserBooking) => (
-              <tr key={booking.id}>
+              <tr key={booking.id} className="hover:bg-gray-100 transition-colors duration-200">
                 <td className="py-2 px-4 border">{booking.id}</td>
                 <td className="py-2 px-4 border">{booking.booking_date}</td>
                 <td className="py-2 px-4 border">{booking.return_date}</td>
@@ -115,8 +110,6 @@ console.log(userBookings);
       </div>
     </div>
   );
-
-  
 };
 
 export default Booking;

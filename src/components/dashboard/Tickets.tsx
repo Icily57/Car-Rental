@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast, { Toaster } from 'react-hot-toast';
 import { RootState } from '../../app/store';
@@ -6,17 +6,20 @@ import { useSelector } from 'react-redux';
 import { ticketsApi } from '../../features/api/ticketsApi';
 
 type TicketFormInputs = {
+  id: number;
   subject: string;
   description: string;
 };
 
 const Ticket: React.FC = () => {
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<TicketFormInputs>();
+  const { register, handleSubmit, formState: { errors }, reset, setValue } = useForm<TicketFormInputs>();
   const [addTicket] = ticketsApi.useCreateTicketMutation();
-  // const [Tickets,setTickets] = useState<TicketFormInputs[]>([]); 
-  // const [updateTicket] = ticketsApi.useUpdateTicketMutation(); // Add this line for update functionality
-  // const [deleteTicket] = ticketsApi.useDeleteTicketMutation(); // Add this line for delete functionality
-  const [isCreateModalOpen, setIsCreateModalOpen] = React.useState(false);
+  const [updateTicket] = ticketsApi.useUpdateTicketMutation();
+  const [deleteTicket] = ticketsApi.useDeleteTicketMutation();
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [editMode, setEditMode] = useState(false);
+  const [currentTicket, setCurrentTicket] = useState<any>(null);
+
   const { user } = useSelector((state: RootState) => state.auth);
   const user_id = user?.user.id;
   const { data: tickets, refetch } = ticketsApi.useGetTicketsByUserIdQuery(user?.user.id);
@@ -28,13 +31,38 @@ const Ticket: React.FC = () => {
     };
 
     try {
-      await addTicket(ticket).unwrap();
-      toast('Ticket submitted successfully');
+      if (editMode && currentTicket) {
+        await updateTicket({ ...ticket, id: currentTicket.id }).unwrap();
+        toast('Ticket updated successfully');
+      } else {
+        await addTicket(ticket).unwrap();
+        toast('Ticket submitted successfully');
+      }
       reset();
       setIsCreateModalOpen(false);
-      refetch(); // Refetch tickets after submitting a new one
+      setEditMode(false);
+      setCurrentTicket(null);
+      refetch();
     } catch (err) {
       toast('Failed to submit ticket');
+    }
+  };
+
+  const handleEdit = (ticket: any) => {
+    setEditMode(true);
+    setCurrentTicket(ticket);
+    setIsCreateModalOpen(true);
+    setValue('subject', ticket.subject);
+    setValue('description', ticket.description);
+  };
+
+  const handleDelete = async (id: number) => {
+    try {
+      await deleteTicket(id).unwrap();
+      toast('Ticket deleted successfully');
+      refetch();
+    } catch (err) {
+      toast('Failed to delete ticket');
     }
   };
 
@@ -44,42 +72,11 @@ const Ticket: React.FC = () => {
     }
   }, [isCreateModalOpen, refetch]);
 
-  // const handleEdit = async (id: number) => {
-  //   try {
-  //     await updateTicket({ id }).unwrap();
-  //     toast('Ticket updated successfully');
-  //     refetch();
-  //   } catch (err) {
-  //     toast('Failed to update ticket');
-  //   }
-  //   console.log('Edit ticket with ID:', id);
-  // };
-
-  // const handleDelete = async (id: number) => {
-  //   try {
-  //   const response = await deleteTicket(id).unwrap();
-  //   console.log(response);
-  //   setTickets(tickets.filter(ticket => ticket.id !== id));
-  //   } catch (err) {
-  //     toast('Failed to delete ticket');
-  //   }
-  //   console.log('Delete ticket with ID:', id);
-  // };
-  // const handleDeleteSpecs = async (id: number) => {
-  //   try {
-  //     const response = await deleteSpecs(id).unwrap();
-  //     console.log('Deleted vehicle spec with ID:', id);
-  //     console.log(response);
-  //     setVehiclesSpecs(vehiclesSpecs.filter(spec => spec.id !== id));
-  //   } catch (error) {
-  //     console.error('Failed to delete vehicle spec', error);
-  //   }
-  // };
-
   return (
-    <div>
-      <div className="max-w-md mx-auto mt-10 p-4 border border-gray-300 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-4">Create a Ticket</h2>
+    <div className="bg-cyan-100 min-h-screen p-6">
+      <Toaster />
+      <div className="max-w-md mx-auto mt-10 p-6 border border-gray-300 rounded-lg shadow-md bg-white">
+        <h2 className="text-2xl font-bold mb-4">{editMode ? 'Edit Ticket' : 'Create a Ticket'}</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
             <label htmlFor="subject" className="block text-sm font-medium text-gray-700">Subject</label>
@@ -106,44 +103,51 @@ const Ticket: React.FC = () => {
               type="submit"
               className="w-full px-4 py-2 bg-blue-500 text-white font-semibold rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              Submit
+              {editMode ? 'Update' : 'Submit'}
             </button>
           </div>
         </form>
       </div>
 
-      <div className="mt-4">
-        <Toaster />
-        <div className="mt-10">
-          <h2 className="font-bold text-3xl text-white mb-4">Your Tickets</h2>
-          {tickets?.length ? (
-            <table className="table-fixed min-w-full bg-base-100 border border-gray-300">
-              <thead>
+      <div className="mt-8">
+        <h2 className="font-bold text-3xl text-center mb-4">Your Tickets</h2>
+        {tickets?.length ? (
+          <div className="overflow-x-auto">
+            <table className="table-fixed min-w-full bg-white rounded-lg shadow-md">
+              <thead className="bg-gray-200">
                 <tr>
-                  <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-black text-2xl tracking-wider">Subject</th>
-                  <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-black text-2xl tracking-wider">Description</th>
-                  {/* <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-black text-2xl tracking-wider">Status</th>
-                  <th className="px-6 py-3 border-b-2 border-gray-300 text-left leading-4 text-black text-2xl tracking-wider">Details</th> */}
+                  <th className="px-6 py-3 border-b text-left leading-4 text-black text-2xl tracking-wider">Subject</th>
+                  <th className="px-6 py-3 border-b text-left leading-4 text-black text-2xl tracking-wider">Description</th>
+                  <th className="px-6 py-3 border-b text-left leading-4 text-black text-2xl tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {tickets.map((ticket: any) => (
-                  <tr key={ticket.id}>
-                    <td className="px-6 py-4 border border-gray-300">{ticket.subject}</td>
-                    <td className="px-6 py-4 border border-gray-300">{ticket.description}</td>
-                    {/* <td className="px-6 py-4 border border-gray-300">{ticket.status}</td> */}
-                    {/* <td className="px-6 py-4 border border-gray-300"> */}
-                      {/* <button className="btn btn-primary mr-2" onClick={() => handleEdit(ticket.id)}>Edit</button> */}
-                      {/* <button className="btn btn-danger" onClick={() => handleDelete(ticket.id)}>Delete</button> */}
-                    {/* </td> */}
+                  <tr key={ticket.id} className="hover:bg-gray-100 transition-colors duration-200">
+                    <td className="px-6 py-4 border">{ticket.subject}</td>
+                    <td className="px-6 py-4 border">{ticket.description}</td>
+                    <td className="px-6 py-4 border flex space-x-2">
+                      <button
+                        className="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 transition duration-200"
+                        onClick={() => handleEdit(ticket)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition duration-200"
+                        onClick={() => handleDelete(ticket.id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          ) : (
-            <p className="text-gray-500">No tickets found.</p>
-          )}
-        </div>
+          </div>
+        ) : (
+          <p className="text-gray-500 text-center">No tickets found.</p>
+        )}
       </div>
     </div>
   );

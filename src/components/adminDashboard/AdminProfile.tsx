@@ -1,87 +1,150 @@
-import cover from '../../assets/cover-01.png';
-import  { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
+import { usersApi } from "../../features/api/usersApi";
 
+const AdminProfile: React.FC = () => {
+  const { user } = useSelector((state: RootState) => state.auth);
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
+    full_name: user?.user.full_name || '',
+    email: user?.user.email || '',
+    contact_phone: user?.user.contact_phone || '',
+    address: user?.user.address || '',
+  });
+  const [updateProfile, { isLoading: isUpdating }] = usersApi.useUpdateUserMutation(); // Assuming a mutation for updating profile
 
-  interface UserProfileProps {
-    full_name: string;
-    email: string;
-    contact_phone?: string;
-    address?: string;
-  }
-  
-  const AdminProfile = () => {
-    const [user, setUser] = useState<UserProfileProps>({
-      full_name: "Kim Mouse",
-      email: "kim@example.com",
-      contact_phone: "123-568-7890",
-      address: "123 Main St, USA",
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        full_name: user.user.full_name || '',
+        email: user.user.email || '',
+        contact_phone: user.user.contact_phone || '',
+        address: user.user.address || '',
+      });
+    }
+  }, [user]);
+
+  const handleEditClick = () => {
+    setIsEditing(!isEditing);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSave = async () => {
+    try {
+      await updateProfile(formData).unwrap();
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Failed to update profile:', error);
+    }
+  };
+
+  const handleCancel = () => {
+    setFormData({
+      full_name: user?.user.full_name || '',
+      email: user?.user.email || '',
+      contact_phone: user?.user.contact_phone || '',
+      address: user?.user.address || '',
     });
-    console.log(setUser);
+    setIsEditing(false);
+  };
+
   return (
     <>
-      {/* <Navbar /> */}
-      <div
-        className="h-screen flex items-center justify-center"
-        style={{
-          backgroundImage: `url(${cover})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat"
-        }}
-      >
-        <div className="w-100 bg-white bg-opacity-75 p-6 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Admin Profile</h2>
-          <div className="space-y-4">
-            <div className="flex flex-col space-y-2">
-              <label htmlFor="full_name" className="text-sm font-medium text-gray-600">Full Name</label>
-              <input
-                type="text"
-                id="full_name"
-                name="full_name"
-                value={user.full_name}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                readOnly
-              />
-            </div>
-            <div className="flex flex-col space-y-2">
-              <label htmlFor="email" className="text-sm font-medium text-gray-600">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={user.email}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                readOnly
-              />
-            </div>
-            <div className="flex flex-col space-y-2">
-              <label htmlFor="contact_phone" className="text-sm font-medium text-gray-600">Contact Phone</label>
-              <input
-                type="text"
-                id="contact_phone"
-                name="contact_phone"
-                value={user.contact_phone || ""}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                readOnly
-              />
-            </div>
-            <div className="flex flex-col space-y-2">
-              <label htmlFor="address" className="text-sm font-medium text-gray-600">Address</label>
-              <input
-                type="text"
-                id="address"
-                name="address"
-                value={user.address || ""}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                readOnly
-              />
-            </div>
+      <div className="w-full max-w-4xl bg-blue-100 bg-opacity-80 p-8 rounded-lg shadow-xl">
+        <h1 className="text-4xl font-bold text-gray-900 text-center mb-6">Admin Profile</h1>
+        <div className="flex items-center mb-6">
+          <div className="w-32 h-32 bg-black rounded-full overflow-hidden flex items-center justify-center">
+            <span className="text-4xl text-white font-semibold">{user?.user.full_name?.[0]}</span>
+          </div>
+          <div className="ml-6">
+            <h2 className="text-3xl font-semibold text-gray-800">{user?.user.full_name}</h2>
+            <p className="text-xl text-gray-600">{user?.user.email}</p>
+          </div>
+        </div>
+        <div className="space-y-6">
+          <div className="flex flex-col space-y-4">
+            <label htmlFor="full_name" className="text-sm font-semibold text-gray-700">Full Name</label>
+            <input
+              type="text"
+              id="full_name"
+              name="full_name"
+              value={formData.full_name}
+              onChange={handleInputChange}
+              className={`px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition ease-in-out duration-300 ${isEditing ? '' : 'bg-gray-100'}`}
+              readOnly={!isEditing}
+            />
+          </div>
+          <div className="flex flex-col space-y-4">
+            <label htmlFor="email" className="text-sm font-semibold text-gray-700">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              className={`px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition ease-in-out duration-300 ${isEditing ? '' : 'bg-gray-100'}`}
+              readOnly={!isEditing}
+            />
+          </div>
+          <div className="flex flex-col space-y-4">
+            <label htmlFor="contact_phone" className="text-sm font-semibold text-gray-700">Contact Phone</label>
+            <input
+              type="text"
+              id="contact_phone"
+              name="contact_phone"
+              value={formData.contact_phone}
+              onChange={handleInputChange}
+              className={`px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition ease-in-out duration-300 ${isEditing ? '' : 'bg-gray-100'}`}
+              readOnly={!isEditing}
+            />
+          </div>
+          <div className="flex flex-col space-y-4">
+            <label htmlFor="address" className="text-sm font-semibold text-gray-700">Address</label>
+            <input
+              type="text"
+              id="address"
+              name="address"
+              value={formData.address}
+              onChange={handleInputChange}
+              className={`px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition ease-in-out duration-300 ${isEditing ? '' : 'bg-gray-100'}`}
+              readOnly={!isEditing}
+            />
+          </div>
+          <div className="flex justify-end space-x-4 mt-6">
+            {isEditing ? (
+              <>
+                <button
+                  className={`bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg transition ease-in-out duration-300 ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  onClick={handleSave}
+                  disabled={isUpdating}
+                >
+                  {isUpdating ? 'Saving...' : 'Save'}
+                </button>
+                <button
+                  className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-6 rounded-lg transition ease-in-out duration-300"
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <button
+                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg transition ease-in-out duration-300"
+                onClick={handleEditClick}
+              >
+                Edit
+              </button>
+            )}
           </div>
         </div>
       </div>
-      {/* <Footer /> */}
     </>
-  )
-}
+  );
+};
 
-export default AdminProfile
+export default AdminProfile;

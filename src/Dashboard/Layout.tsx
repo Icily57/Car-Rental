@@ -5,7 +5,7 @@ import SideNav from './SideNav'
 
 function Layout() {
     return (
-        <div className='flex max-h-fit min-h-full bg-base-100 text-green-400'>
+        <div className='flex max-h-fit min-h-full bg-blue-100 text-green-400'>
             <div className='min-w-[10%] bg-green-200 hidden md:block'>
                 <SideNav/>
             </div>

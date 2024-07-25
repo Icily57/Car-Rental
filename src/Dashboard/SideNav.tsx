@@ -3,7 +3,7 @@
 import { Link } from "react-router-dom"
 function SideNav() {
     return (
-        <ul className="menu bg-base-200  min-w-fit gap-2 text-base-content min-h-full">
+        <ul className="menu bg-blue-100  min-w-fit gap-2 text-black min-h-full">
             <li>
                 <Link to="">Me</Link>
             </li>
