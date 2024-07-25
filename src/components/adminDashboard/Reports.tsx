@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, LineChart, Line } from 'recharts';
 
 // Dummy data for the report
 const bookingData = [
@@ -31,7 +31,7 @@ const userData = [
 ];
 
 const Report: React.FC = () => {
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+//   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
   
   return (
     <>
@@ -42,13 +42,13 @@ const Report: React.FC = () => {
           <div className="bg-white shadow-md rounded-lg p-6">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Monthly Bookings</h2>
             <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={bookingData}>
+              <LineChart data={bookingData}>
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="bookings" fill="#8884d8" />
-              </BarChart>
+                <Line type="monotone" dataKey="bookings" stroke="#8884d8" />
+              </LineChart>
             </ResponsiveContainer>
           </div>
 
@@ -56,13 +56,13 @@ const Report: React.FC = () => {
           <div className="bg-white shadow-md rounded-lg p-6">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Monthly Revenue</h2>
             <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={revenueData}>
+              <LineChart data={revenueData}>
                 <XAxis dataKey="month" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="revenue" fill="#82ca9d" />
-              </BarChart>
+                <Line type="monotone" dataKey="revenue" stroke="#82ca9d" />
+              </LineChart>
             </ResponsiveContainer>
           </div>
 
@@ -70,22 +70,13 @@ const Report: React.FC = () => {
           <div className="bg-white shadow-md rounded-lg p-6">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Ticket Status</h2>
             <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={ticketData}
-                  dataKey="count"
-                  nameKey="type"
-                  outerRadius={100}
-                  fill="#8884d8"
-                  label
-                >
-                  {ticketData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
+              <BarChart data={ticketData}>
+                <XAxis dataKey="type" />
+                <YAxis />
                 <Tooltip />
                 <Legend />
-              </PieChart>
+                <Bar dataKey="count" fill="#8884d8" />
+              </BarChart>
             </ResponsiveContainer>
           </div>
 
@@ -93,22 +84,13 @@ const Report: React.FC = () => {
           <div className="bg-white shadow-md rounded-lg p-6">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">User Distribution</h2>
             <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={userData}
-                  dataKey="count"
-                  nameKey="role"
-                  outerRadius={100}
-                  fill="#82ca9d"
-                  label
-                >
-                  {userData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
+              <BarChart data={userData}>
+                <XAxis dataKey="role" />
+                <YAxis />
                 <Tooltip />
                 <Legend />
-              </PieChart>
+                <Bar dataKey="count" fill="#82ca9d" />
+              </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
