@@ -32,6 +32,8 @@ const Explore: React.FC = () => {
     pollingInterval: 60000,
   });
 
+  console.log("Cars data:", carsData);
+
   const [cars, setCars] = useState<Car[]>([]);
 
   useEffect(() => {

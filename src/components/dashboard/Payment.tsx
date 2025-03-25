@@ -2,6 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { paymentApi } from '../../features/api/paymentApi';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { RootState } from '../../app/store';
 
 interface Payment {
     id: number;
@@ -14,7 +15,8 @@ interface Payment {
 }
 
 const UserPayments: React.FC = () => {
-    const user_id = useSelector((state: any) => state.auth.user.id);
+    const { user } = useSelector((state: RootState) => state.auth);
+    const user_id = user?.id;
 
     const { data: payments, isError, isLoading } = paymentApi.useGetPaymentsQuery(user_id, {
         refetchOnFocus: true,

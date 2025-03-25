@@ -9,12 +9,14 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 import { ticketsApi } from '../features/api/ticketsApi';
 
-const persistConfig = {
-  key: 'root',
+const authPersistConfig = {
+  key: 'auth',
   storage,
+  whitelist: ['user', 'token', 'isAuthenticated', ],
 };
 
-const persistedAuthReducer = persistReducer(persistConfig, authReducer);
+
+const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
 
 const store = configureStore({
   reducer: {

@@ -1,14 +1,5 @@
-import React from 'react';
-import Car1 from '../assets/images/car.jpg';
-import Car2 from '../assets/images/Car1.jpg';
-import Car3 from '../assets/images/Car2.jpg';
-import Car4 from '../assets/images/Car3.jpg';
-import Car5 from '../assets/images/Car4.jpg';
-import Car6 from '../assets/images/Car5.jpg';
-import Car7 from '../assets/images/Car6.jpg';
-import Car8 from '../assets/images/Car7.jpg';
-import Car9 from '../assets/images/Car8.jpg';
-import Car10 from '../assets/images/Car9.jpg';
+import React from "react";
+import { fleetApi } from "../features/api/fleetApi"; // Import the hook
 
 interface VehicleSpecs {
   manufacturer: string;
@@ -16,40 +7,41 @@ interface VehicleSpecs {
   year: string;
   imageUrl: string; 
 }
-
-// Dummy data with local image paths
-const dummyCars: VehicleSpecs[] = [
-  { manufacturer: 'Toyota', model: 'Camry', year: '2023', imageUrl:Car1,},
-  { manufacturer: 'Honda', model: 'Civic', year: '2022', imageUrl:Car2,},
-  { manufacturer: 'Ford', model: 'Mustang', year: '2021',  imageUrl:Car3,},
-  { manufacturer: 'Chevrolet', model: 'Malibu', year: '2023', imageUrl:Car4,},
-  { manufacturer: 'BMW', model: 'X5', year: '2020',  imageUrl:Car5,},
-  { manufacturer: 'Audi', model: 'A4', year: '2022', imageUrl:Car6,},
-  { manufacturer: 'Mercedes', model: 'C-Class', year: '2021', imageUrl:Car7,},
-  { manufacturer: 'Hyundai', model: 'Elantra', year: '2023', imageUrl:Car8,},
-  { manufacturer: 'Kia', model: 'Optima', year: '2020', imageUrl:Car9,},
-  { manufacturer: 'Nissan', model: 'Altima', year: '2022', imageUrl:Car10,},
-];
-
 const Fleet: React.FC = () => {
+  const { data: cars, isLoading, error } = fleetApi.endpoints.getVehiclesWithDetails.useQuery({});
+
   return (
-    <div className="container mx-auto py-8 bg-gradient-to-r from-blue-100 to-blue-200">
-      <h1 className="text-4xl font-extrabold text-center mb-8 text-gray-900">Our Fleet</h1>
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
-        {dummyCars.map((car, index) => (
-          <div key={index} className="card shadow-xl transform transition duration-300 hover:scale-105 hover:shadow-2xl">
-            <img
-              src={car.imageUrl}
-              alt={`${car.manufacturer} ${car.model}`}
-              className="card-image rounded-t-lg"
-            />
-            <div className="card-body bg-white p-4">
-              <h2 className="card-title text-xl font-bold text-gray-800 mb-2">{`${car.manufacturer} ${car.model}`}</h2>
-              <p className="text-gray-700"><strong>Year:</strong> {car.year}</p>              
+    <div className="container mx-auto py-12 bg-gradient-to-b from-black via-gray-900 to-black text-white">
+      <h1 className="text-5xl font-extrabold text-center mb-10 text-blue-400">Our Fleet</h1>
+
+      {isLoading && <p className="text-center text-gray-400">Loading fleet...</p>}
+      {error && <p className="text-center text-red-500">Failed to load vehicles. Please try again.</p>}
+
+      {!isLoading && !error && cars && (
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+          {cars.map((vehicle: VehicleSpecs) => (
+            <div>
+            // 
+            {/* //   key={vehicle.id}
+            //   className="card shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-2xl 
+            //  border-2 border-purple-500 rounded-lg bg-gray-800 p-4"
+            // > */}
+              <img src={vehicle.imageUrl}
+          alt={`${vehicle.manufacturer} ${vehicle.model}`}
+          className="w-full h-40 object-cover rounded-lg border-b-2 border-blue-400"
+              />
+              <div className="p-4">
+          <h2 className="text-2xl font-bold text-yellow-400 mb-1">
+            {vehicle.manufacturer} {vehicle.model}
+          </h2>
+          <p className="text-gray-300">
+            <strong>Year:</strong> {vehicle.year}
+          </p>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -40,7 +40,7 @@ const VehicleDetails: React.FC = () => {
   const [createBooking] = bookingApi.useCreateBookingMutation();
   const { user, isAuthenticated } = useSelector((state: RootState) => state.auth);
   const vehicle_id = window.location.pathname.split('/')[2];
-  const user_id = user?.user.id; // Replace with actual user ID logic
+  const user_id = user?.id; // Replace with actual user ID logic
 
   const { data: carWithDetails, error, isLoading } = vehiclesApi.useGetOneVehicleWithDetailsByIdQuery(vehicle_id);
 

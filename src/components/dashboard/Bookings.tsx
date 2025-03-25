@@ -20,7 +20,7 @@ interface UserBooking {
 const Booking: React.FC = () => {
   // const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
-  const user_id = user?.user.id;
+  const user_id = user?.id;
   const [deleteBooking] = bookingApi.useDeleteBookingMutation();
 
   const { data: userBookings, error, isLoading } = bookingApi.useGetBookingsByUserIdQuery(user_id);

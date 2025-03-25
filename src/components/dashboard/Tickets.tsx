@@ -17,8 +17,8 @@ const Ticket: React.FC = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const { user } = useSelector((state: RootState) => state.auth);
-  const user_id = user?.user.id;
-  const { data: tickets, refetch } = ticketsApi.useGetTicketsByUserIdQuery(user?.user.id);
+  const user_id = user?.id;
+  const { data: tickets, refetch } = ticketsApi.useGetTicketsByUserIdQuery(user?.id);
 
   const onSubmit = async (data: TicketFormInputs) => {
     const ticket = {

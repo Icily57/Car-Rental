@@ -4,7 +4,7 @@ import Dashboard from './pages/Dashboard.tsx'
 import Error from './pages/Error.tsx'
 import Explore from './pages/Explore.tsx'
 import About from './pages/About.tsx'
-import Login from './components/UserLogin.tsx'
+import UserLogin from './pages/Login.tsx'
 import UserProfile from './components/dashboard/UserProfile.tsx'
 import Bookings from '../src/components/dashboard/Bookings.tsx'
 import Tickets from './components/dashboard/Tickets.tsx'
@@ -18,7 +18,6 @@ import AllUsers from './components/adminDashboard/AllUsers.tsx'
 import AllVehicles from './components/adminDashboard/AllVehicles.tsx'
 import AllsVehSpecs from './components/adminDashboard/AllsVehSpecs.tsx'
 import AllPayments from './components/adminDashboard/AllPayment.tsx'
-import AdminLogin from './components/AdminLogin.tsx'
 import AdminHome from './pages/AdminHome.tsx'
 
 const router = createBrowserRouter([
@@ -29,7 +28,7 @@ const router = createBrowserRouter([
   },
   {
     path: 'login',
-      element: <Login />,
+      element: <UserLogin />,
       errorElement:<Error/>,
     },
     {
@@ -47,11 +46,11 @@ const router = createBrowserRouter([
     element: <About />,
     errorElement:<Error/>,
   },
-  {
-    path: 'login/admin',
-    element: <AdminLogin />,
-    errorElement:<Error/>,
-  },
+  // {
+  //   path: 'login/admin',
+  //   element: <AdminLogin />,
+  //   errorElement:<Error/>,
+  // },
   {
     path: '/admin',
       element: <AdminHome />,

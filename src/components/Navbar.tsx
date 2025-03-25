@@ -65,7 +65,7 @@ const Navbar = () => {
         {isAuthenticated ? (
           <div className="dropdown dropdown-end">
             <span>
-              <a className="btn btn-ghost">Welcome, {user.user.full_name}</a>
+              <a className="btn btn-ghost">Welcome, {user.full_name}</a>
             </span>
             <div tabIndex={0} className="m-1 btn btn-ghost">
               <FaUserCircle className="h-5 w-5" />

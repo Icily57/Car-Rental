@@ -8,10 +8,10 @@ const UserProfile: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    full_name: user?.user.full_name || '',
-    email: user?.user.email || '',
-    contact_phone: user?.user.contact_phone || '',
-    address: user?.user.address || '',
+    full_name: user?.full_name || '',
+    email: user?.email || '',
+    contact_phone: user?.contact_phone || '',
+    address: user?.address || '',
   });
 
   const handleEditClick = () => {
@@ -31,10 +31,10 @@ const UserProfile: React.FC = () => {
   const handleCancel = () => {
     // Reset form data to user data if needed
     setFormData({
-      full_name: user?.user.full_name || '',
-      email: user?.user.email || '',
-      contact_phone: user?.user.contact_phone || '',
-      address: user?.user.address || '',
+      full_name: user?.full_name || '',
+      email: user?.email || '',
+      contact_phone: user?.contact_phone || '',
+      address: user?.address || '',
     });
     setIsEditing(false);
   };
@@ -47,11 +47,11 @@ const UserProfile: React.FC = () => {
           <h1 className="text-4xl font-bold text-gray-900 text-center mb-6">My Profile</h1>
           <div className="flex items-center mb-6">
             <div className="w-32 h-32 bg-black rounded-full overflow-hidden flex items-center justify-center">
-              <span className="text-4xl text-white font-semibold">{user?.user.full_name?.[0]}</span>
+              <span className="text-4xl text-white font-semibold">{user?.full_name?.[0]}</span>
             </div>
             <div className="ml-6">
-              <h2 className="text-3xl font-semibold text-gray-800">{user?.user.full_name}</h2>
-              <p className="text-xl text-gray-600">{user?.user.email}</p>
+              <h2 className="text-3xl font-semibold text-gray-800">{user?.full_name}</h2>
+              <p className="text-xl text-gray-600">{user?.email}</p>
             </div>
           </div>
           <div className="space-y-6">
