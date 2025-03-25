@@ -1,0 +1,19 @@
+.custom-swiper {
+    width: 100%;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .custom-swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f8f8;
+  }
+  
+  .custom-swiper-slide img {
+    width: 100%;
+    height: 300px;
+    border-radius: 10px;
+  }
