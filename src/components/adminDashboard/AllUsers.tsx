@@ -23,7 +23,7 @@ const AllUsers = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <AiOutlineLoading3Quarters className="animate-spin text-green-300 text-4xl" />
+        <AiOutlineLoading3Quarters className="animate-spin text-blue-700 text-4xl" />
       </div>
     );
   }
@@ -37,33 +37,36 @@ const AllUsers = () => {
   }
 
   return (
-    <div className="overflow-x-auto text-base-content bg-blue-200 rounded-lg p-4 shadow-lg">
-      <table className="table w-full">
-        <thead className="text-base-content bg-gray-200">
+    <div className="p-4  min-h-screen">
+      <h1 className="text-3xl font-bold text-center mb-6 text-white">All Users</h1>
+    <div className="overflow-x-auto flex flex-col items-center rounded-lg p-4 ">
+      <table className="table w-4/5 bg-blue-100 rounded-lg shadow-md ">
+        <thead className="bg-blue-400">
           <tr>
-            <th className="text-green-500 py-2">Full Name</th>
-            <th className="text-green-500 py-2">Email</th>
-            <th className="text-green-500 py-2">Contact</th>
-            <th className="text-green-500 py-2">Address</th>
-            <th className="text-green-500 py-2">Role</th>
+            <th className="text-black py-2 text-lg">Full Name</th>
+            <th className="text-black py-2 text-lg">Email</th>
+            <th className="text-black py-2 text-lg">Contact</th>
+            <th className="text-black py-2 text-lg">Address</th>
+            <th className="text-black py-2 text-lg">Role</th>
           </tr>
         </thead>
         <tbody>
           {users.map((user) => (
-            <tr key={user.id} className="hover:bg-gray-100">
+            <tr key={user.id} className="hover:bg-blue-100">
               <td className="py-2">
-                <div className="font-bold text-green-500">{user.full_name}</div>
+                <div className="font-bold text-blue-900">{user.full_name}</div>
               </td>
               <td className="py-2">
-                <div className="text-sm opacity-70">{user.email}</div>
+                <div className="font-bold text-blue-900">{user.email}</div>
               </td>
-              <td className="py-2">{user.contact_phone}</td>
-              <td className="py-2">{user.address}</td>
-              <td className="py-2">{user.role}</td>
+              <td className="py-2 font-bold text-blue-900">{user.contact_phone}</td>
+              <td className="py-2 font-bold text-blue-900">{user.address}</td>
+              <td className="py-2 font-bold text-blue-900">{user.role}</td>
             </tr>
           ))}
         </tbody>
       </table>
+    </div>
     </div>
   );
 };

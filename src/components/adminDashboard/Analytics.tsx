@@ -51,11 +51,9 @@ const Analytics: React.FC = () => {
 
   useEffect(() => {
     if (bookingData) {
-      const totalRevenue = bookingData.reduce((acc: number, booking: any) => acc + booking.amount, 0);
       setAnalyticsData((prevData) => ({
         ...prevData,
         totalBookings: bookingData.length,
-        totalRevenue,
       }));
     }
   }, [bookingData]);
@@ -71,14 +69,17 @@ const Analytics: React.FC = () => {
 
   useEffect(() => {
     if (paymentData) {
-      const totalRevenue = paymentData.reduce((acc: number, payment: any) => acc + payment.amount, 0);
+      const totalRevenue = paymentData.reduce(
+        (acc: number, payment: any) => acc + Number(payment.amount || 0), // Ensure it's a number
+        0
+      );
       setAnalyticsData((prevData) => ({
         ...prevData,
-        totalRevenue: paymentData.length,
+        totalRevenue, // Correctly setting totalRevenue as a number
       }));
-      console.log(totalRevenue)
     }
   }, [paymentData]);
+  
 
   if (userLoading || bookingLoading || vehicleLoading || paymentLoading) return <div>Loading...</div>;
   if (userError) return <div>Error fetching user data</div>;
@@ -103,7 +104,8 @@ const Analytics: React.FC = () => {
           <FaMoneyBillWave className="text-4xl mr-4" />
           <div className="card-body text-center">
             <h2 className="text-xl font-bold">Total Revenue</h2>
-            <p className="text-4xl">${analyticsData.totalRevenue.toFixed(2)}</p>
+            <p className="text-4xl">${analyticsData.totalRevenue ? analyticsData.totalRevenue.toFixed(2) : '0.00'}</p>
+
           </div>
         </div>
         {/* Total Users */}

@@ -1,11 +1,19 @@
 import { Menu } from "lucide-react";
-import { FaCalendarAlt, FaCreditCard, FaTicketAlt, FaUserCircle } from "react-icons/fa";
+import { FaCalendarAlt, FaCreditCard, FaTicketAlt, FaUserCircle, FaSignOutAlt } from "react-icons/fa";
 import { Link} from "react-router-dom";
 import { useState } from "react";
 
 function Nav() {
     // const navigate = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
+
+    function handleLogout(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
+        event.preventDefault();
+        // Clear user session or token (example: localStorage)
+        localStorage.removeItem("userToken");
+        // Redirect to login page or home
+        window.location.href = "/login";
+    }
 
     return (
         <nav className="bg-base-200 shadow-md fixed top-0 left-0 w-full z-50">
@@ -18,8 +26,17 @@ function Nav() {
                 {/* Desktop Menu */}
                 <ul className="hidden md:flex space-x-6">
                     <li>
-                        <Link to="/book" className="font-semibold hover:text-primary">Book</Link>
+                        <Link to="" className="flex items-center hover:text-primary">
+                            <FaUserCircle className="mr-2" />
+                            My Profile
+                        </Link>
                     </li>
+                   <li>
+                   <Link to="/" className="flex items-center hover:text-primary">
+                            <FaCalendarAlt className="mr-2" />
+                            Home
+                        </Link>
+                   </li>
                     <li>
                         <Link to="bookings" className="flex items-center hover:text-primary">
                             <FaCalendarAlt className="mr-2" />
@@ -39,11 +56,10 @@ function Nav() {
                         </Link>
                     </li>
                     <li>
-                        <Link to="/profile" className="flex items-center hover:text-primary">
-                            <FaUserCircle className="mr-2" />
-                            My Profile
-                        </Link>
-                    </li>
+                <button onClick={handleLogout} className="flex items-center">
+                  <FaSignOutAlt className="mr-2" /> Logout
+                </button>
+              </li>
                 </ul>
 
                 {/* Mobile Menu Button */}
@@ -87,6 +103,11 @@ function Nav() {
                                 <FaUserCircle className="mr-2" />
                                 My Profile
                             </Link>
+                        </li>
+                        <li>
+                            <button onClick={handleLogout} className="flex items-center">
+                            <FaSignOutAlt className="mr-2" /> Logout
+                            </button>
                         </li>
                     </ul>
                 </div>

@@ -96,7 +96,7 @@ const router = createBrowserRouter([
     errorElement:<Error/>,
     children: [
       {
-        path: "",
+        path: "users",
         element: <AllUsers />,
       },
       {

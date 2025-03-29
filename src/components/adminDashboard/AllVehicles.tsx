@@ -68,28 +68,28 @@ const AllVehicles = () => {
   };
 
   return (
-    <div className="bg-blue-100 min-h-screen flex flex-col">
+    <div className="bg-gradient-to-b from-blue-600 to-blue-950 min-h-screen flex flex-col">
       <AdminNavbar />
-      <div className="flex-grow p-6 bg-white bg-opacity-75 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-center mb-6 text-blue-800">All Vehicles</h1>
+      <div className="flex-grow p-6 bg-gradient-to-b from-blue-600 to-blue-950 bg-opacity-75 rounded-lg shadow-lg">
+        <h1 className="text-3xl font-bold text-center mb-6 text-white">All Vehicles</h1>
         <AddVehicleForm onSuccess={handleSuccess} />
-        <div className="overflow-x-auto mt-6">
-          <table className="table-auto min-w-full bg-white rounded-lg shadow-md border border-gray-200">
-            <thead className="bg-blue-200">
+        <div className="overflow-x-auto mt-6 flex flex-col items-center">
+        <table className="table w-4/5 bg-blue-200 rounded-lg shadow-md ">
+        <thead className="bg-blue-400">
               <tr>
-                <th className="py-3 px-4 border-b font-semibold text-blue-800">ID</th>
-                <th className="py-3 px-4 border-b font-semibold text-blue-800">Name</th>
-                <th className="py-3 px-4 border-b font-semibold text-blue-800">Rental Rate</th>
-                <th className="py-3 px-4 border-b font-semibold text-blue-800">Actions</th>
+                <th className="text-black py-2 text-lg font-bold text-left">ID</th>
+                <th className="text-black py-2 text-lg font-bold text-left">Name</th>
+                <th className="text-black py-2 text-lg font-bold text-left">Rental Rate</th>
+                <th className="text-black py-2 text-lg font-bold text-left">Actions</th>
               </tr>
             </thead>
             <tbody>
               {vehicles.map((vehicle) => (
-                <tr key={vehicle.id} className="hover:bg-blue-50 text-black transition duration-200">
-                  <td className="py-3 px-4 border-b">{vehicle.id}</td>
-                  <td className="py-3 px-4 border-b">{vehicle.vehicleSpecs.manufacturer}</td>
-                  <td className="py-3 px-4 border-b">${vehicle.rental_rate}</td>
-                  <td className="py-3 px-4 border-b">
+                <tr key={vehicle.id} className="hover:bg-blue-100 text-black transition duration-200">
+                  <td className="py-2 font-bold text-blue-900">{vehicle.id}</td>
+                  <td className="py-2 font-bold text-blue-900">{vehicle.vehicleSpecs.manufacturer}</td>
+                  <td className="py-2 font-bold text-blue-900">${vehicle.rental_rate}</td>
+                  <td className="py-2 font-bold text-blue-900">
                     <button onClick={() => handleDeleteVehicle(vehicle.id)} className="btn btn-danger">
                       Delete
                     </button>

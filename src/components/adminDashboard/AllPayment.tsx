@@ -19,8 +19,8 @@ const AllPayments: React.FC = () => {
   });
 
   return (
-    <div className="p-6 bg-blue-100 min-h-screen">
-      <h1 className="text-3xl font-bold text-center mb-6">All Payments</h1>
+    <div className="p-4 min-h-screen">
+      <h1 className="text-3xl font-bold text-center mb-6 text-white">All Payments</h1>
       
       {isLoading && (
         <div className="flex justify-center items-center h-screen">
@@ -35,28 +35,28 @@ const AllPayments: React.FC = () => {
       )}
       
       {payments && (
-        <div className="overflow-x-auto">
-          <div className="bg-white rounded-lg shadow-md border border-gray-200">
-            <table className="min-w-full">
-              <thead className="bg-gray-200">
+        <div className="overflow-x-auto flex justify-center items-center">
+          <div className=" rounded-lg  border">
+          <table className="table w-4/5 bg-blue-100 rounded-lg shadow-md ">
+             <thead className="bg-blue-400">
                 <tr>
-                  <th className="py-3 px-4 border-b">ID</th>
-                  <th className="py-3 px-4 border-b">User ID</th>
-                  <th className="py-3 px-4 border-b">Booking ID</th>
-                  <th className="py-3 px-4 border-b">Payment Date</th>
-                  <th className="py-3 px-4 border-b">Payment Status</th>
-                  <th className="py-3 px-4 border-b">Amount</th>
-                  <th className="py-3 px-4 border-b">Payment Method</th>
+                  <th className="text-black py-2 text-lg font-bold text-left">ID</th>
+                  <th className="text-black py-2 text-lg font-bold text-left">User ID</th>
+                  <th className="text-black py-2 text-lg font-bold text-left">Booking ID</th>
+                  <th className="text-black py-2 text-lg font-bold text-left">Payment Date</th>
+                  <th className="text-black py-2 text-lg font-bold text-left">Payment Status</th>
+                  <th className="text-black py-2 text-lg font-bold text-left">Amount</th>
+                  <th className="text-black py-2 text-lg font-bold text-left">Payment Method</th>
                 </tr>
               </thead>
               <tbody>
                 {payments.map((payment: Payment) => (
-                  <tr key={payment.id} className="hover:bg-gray-100 transition duration-200 ease-in-out">
-                    <td className="py-3 px-4 border-b">{payment.id}</td>
-                    <td className="py-3 px-4 border-b">{payment.user_id}</td>
-                    <td className="py-3 px-4 border-b">{payment.booking_id}</td>
-                    <td className="py-3 px-4 border-b">{new Date(payment.payment_date).toLocaleDateString()}</td>
-                    <td className="py-3 px-4 border-b">
+                  <tr key={payment.id} className="hover:bg-blue-100 transition duration-200 ease-in-out">
+                    <td className="py-2 font-bold text-blue-900">{payment.id}</td>
+                    <td className="py-2 font-bold text-blue-900">{payment.user_id}</td>
+                    <td className="py-2 font-bold text-blue-900">{payment.booking_id}</td>
+                    <td className="py-2 font-bold text-blue-900">{new Date(payment.payment_date).toLocaleDateString()}</td>
+                    <td className="py-2 font-bold text-blue-900">
                       <span
                         className={`px-2 py-1 rounded-full text-white ${
                           payment.payment_status === 'paid' ? 'bg-green-500' : 'bg-red-500'
@@ -65,8 +65,8 @@ const AllPayments: React.FC = () => {
                         {payment.payment_status}
                       </span>
                     </td>
-                    <td className="py-3 px-4 border-b">${payment.amount}</td>
-                    <td className="py-3 px-4 border-b">{payment.payment_method}</td>
+                    <td className="py-2 font-bold text-blue-900">${payment.amount}</td>
+                    <td className="py-2 font-bold text-blue-900">{payment.payment_method}</td>
                   </tr>
                 ))}
               </tbody>

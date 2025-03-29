@@ -26,25 +26,25 @@ const AddVehicleForm = ({ onSuccess }: AddVehicleFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="max-w-lg mx-auto my-4 bg-white">
-      <div className="mb-4">
-        <label className="block text-base-300">Rental Rate</label>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center  mx-auto my-4  text-white font-bold  border-none">
+      <div className="mb-4 ">
+        <label className="block text-gray-200">Rental Rate</label>
         <input
           type="number"
           {...register('rental_rate', { required: true })}
-          className="w-full px-3 py-2 border rounded bg-white text-black"
+          className="w-full px-3 py-2 border rounded bg-blue-100 text-black"
         />
       </div>
       <div className="mb-4">
-        <label className="block text-gray-700 ">Vehicle Spec ID</label>
+        <label className="block text-gray-200 ">Vehicle Spec ID</label>
         <input
           type="number"
           {...register('vehicleSpec_id', { required: true })}
-          className="w-full px-3 py-2 border rounded bg-white text-black"
+          className="w-full px-3 py-2 border rounded bg-blue-100 text-black"
         />
       </div>
       
-      <button type="submit" className="btn btn-primary">
+      <button type="submit" className="btn btn-primary bg-blue-800 text-gray-200">
         Add Vehicle
       </button>
     </form>

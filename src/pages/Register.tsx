@@ -16,55 +16,69 @@ const Register: React.FC = () => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {      
        await registerUser(data).unwrap();
-       toast.success('Registration successful, please login');
+       toast.success("🎉 Registration successful! Please login.", { style: { background: "#1E3A8A", color: "#fff" } });
        navigate('/login');
     } catch (err:any) {
-       toast.error('An error occurred. Please try again.');
+       toast.error("⚠️ An error occurred. Please try again.", { style: { background: "#1E3A8A", color: "#fff" } });
     }
   };
 
   return (
     <>
       <Navbar />
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-teal-500">
-        <form onSubmit={handleSubmit(onSubmit)} className="card gap-6 p-10 shadow-xl rounded-lg w-full max-w-lg bg-white">
-          <h1 className="text-4xl text-gray-900 text-center mb-6">Register</h1>
-          <div className="grid grid-cols-1 gap-4 place-items-center rounded-box max-w-fit min-w-full">
-            <div className="w-full max-w-xs">
-              <input {...register("full_name", { required: true })} type="text" className="input input-bordered w-full" placeholder="Full Name" />
-              {errors.full_name && <span className="text-red-600">Full Name is required</span>}
-            </div>
-            <div className="w-full max-w-xs">
-              <input {...register("email", { required: true })} type="email" className="input input-bordered w-full" placeholder="Email" />
-              {errors.email && <span className="text-red-600">Email is required</span>}
-            </div>
-            <div className="w-full max-w-xs">
-              <input {...register("password", { required: true })} type="password" className="input input-bordered w-full" placeholder="Password" />
-              {errors.password && <span className="text-red-600">Password is required</span>}
-            </div>
-            <div className="w-full max-w-xs">
-              <input {...register("contact_phone")} type="text" className="input input-bordered w-full" placeholder="Contact Phone" />
-            </div>
-            <div className="w-full max-w-xs">
-              <input {...register("address")} type="text" className="input input-bordered w-full" placeholder="Address" />
-            </div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-800 via-blue-700 to-blue-900 p-6">
+        <form 
+          onSubmit={handleSubmit(onSubmit)} 
+          className="card bg-white/90 backdrop-blur-md p-10 rounded-2xl shadow-2xl w-full max-w-md text-gray-800 border border-blue-200"
+        >
+          <h1 className="text-3xl font-bold text-center mb-6 text-blue-700 font-[Poppins]">
+            🚀 Welcome! Create Your Account
+          </h1>
+          
+          <div className="space-y-6">
+            {[
+              { label: "Full Name", name: "full_name", type: "text", required: true },
+              { label: "Email", name: "email", type: "email", required: true },
+              { label: "Password", name: "password", type: "password", required: true },
+              { label: "Contact Phone", name: "contact_phone", type: "text", required: false },
+              { label: "Address", name: "address", type: "text", required: false },
+            ].map(({ label, name, type, required }) => (
+              <div key={name} className="relative">
+                <input 
+                  {...register(name as keyof FormValues, required ? { required: true } : {})}
+                  type={type} 
+                  placeholder=" " 
+                  className="peer w-full px-4 py-3 border border-blue-300 rounded-lg bg-blue-50 text-lg text-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                />
+                <label className="absolute left-4 top-3 text-gray-500 text-lg transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-1 peer-focus:text-sm peer-focus:text-blue-600">
+                  {label}
+                </label>
+                {errors[name as keyof FormValues] && (
+                  <span className="text-red-500 text-sm">⚠️ {label} is required</span>
+                )}
+              </div>
+            ))}
           </div>
-          <div className="w-full flex justify-center">
-            <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-10 rounded-lg text-lg">
-              {isLoading ? <span className="loading loading-spinner text-error"></span> : 'Register'}
+
+          <div className="w-full flex justify-center mt-6">
+            <button 
+              type="submit" 
+              className="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold py-3 px-10 rounded-lg text-lg transition-all duration-300 hover:scale-105 shadow-md hover:shadow-blue-400/50"
+            >
+              {isLoading ? <span className="loading loading-spinner text-white"></span> : "Register ✨"}
             </button>
           </div>
-          <NavLink to="/" className="text-gray-900 mt-4 text-center block">
-            🏡 Go to HomePage
+
+          <NavLink to="/" className="block text-center text-blue-700 mt-6 hover:text-blue-500 transition">
+            🏡 Back to Home
           </NavLink>
-          <div className="mt-4 text-center">
-            <p className="text-sm text-gray-600">
-              Already have an account?{' '}
-              <NavLink to="/login" className="text-blue-500 hover:underline">
-                Login here
-              </NavLink>.
-            </p>
-          </div>
+
+          <p className="text-center text-gray-700 text-sm mt-4">
+            Already have an account? 
+            <NavLink to="/login" className="text-blue-500 hover:underline ml-1">
+              Login here
+            </NavLink>.
+          </p>
         </form>
       </div>
       <Footer />

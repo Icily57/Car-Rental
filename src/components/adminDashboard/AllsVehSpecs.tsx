@@ -101,79 +101,79 @@ const AllsVehSpecs: React.FC = () => {
   }
 
   return (
-    <div className="p-6 bg-blue-100 min-h-screen">
-      <h1 className="text-3xl font-bold mb-6 text-center">All Vehicle Specifications</h1>
+    <div className="p-4 min-h-screen flex flex-col items-center">
+      <h1 className="text-3xl font-bold mb-6 text-center text-white">All Vehicle Specifications</h1>
 
       <button
-        className="btn btn-primary mb-4"
+        className="btn btn-primary mb-4 items-center"
         onClick={() => (document.getElementById('my_modal_4') as HTMLDialogElement)?.showModal()}
       >
         Add Specs
       </button>
-      <dialog id="my_modal_4" className="modal-box w-3/4 max-w-full p-6">
-        <div className="modal-box w-full max-w-4xl bg-white rounded-lg shadow-lg p-6">
-          <h3 className="text-2xl font-bold mb-4">Add New Vehicle Specification</h3>
+      <dialog id="my_modal_4" className="modal-box w-3/4  p-6 bg-blue-900">
+        <div className="modal-box w-full max-w-4xl bg-blue-700 rounded-lg  p-6">
+          <h3 className="text-2xl font-bold mb-4 text-white">Add New Vehicle Specification</h3>
           <form method="dialog" className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <input
                 type="text"
                 {...register('manufacturer', { required: true })}
                 placeholder="Manufacturer"
-                className="input input-bordered w-full p-3 rounded-md border-gray-300 shadow-sm"
+                className="input input-bordered w-full p-3 rounded-md border-blue-100 bg-blue-300 text-black"
               />
               <input
                 type="text"
                 {...register('model', { required: true })}
                 placeholder="Model"
-                className="input input-bordered w-full p-3 rounded-md border-gray-300 shadow-sm"
+                className="input input-bordered w-full p-3 rounded-md border-blue-100 bg-blue-300 text-black"
               />
               <input
                 type="text"
                 {...register('year', { required: true })}
                 placeholder="Year"
-                className="input input-bordered w-full p-3 rounded-md border-gray-300 shadow-sm"
+                className="input input-bordered w-full p-3 rounded-md border-blue-100 bg-blue-300 text-black"
               />
               <input
                 type="text"
                 {...register('fuel_type', { required: true })}
                 placeholder="Fuel Type"
-                className="input input-bordered w-full p-3 rounded-md border-gray-300 shadow-sm"
+                className="input input-bordered w-full p-3 rounded-md border-blue-100 bg-blue-300 text-black"
               />
               <input
                 type="text"
                 {...register('engine_capacity', { required: true })}
                 placeholder="Engine Capacity"
-                className="input input-bordered w-full p-3 rounded-md border-gray-300 shadow-sm"
+                className="input input-bordered w-full p-3 rounded-md border-blue-100 bg-blue-300 text-black"
               />
               <input
                 type="text"
                 {...register('transmission', { required: true })}
                 placeholder="Transmission"
-                className="input input-bordered w-full p-3 rounded-md border-gray-300 shadow-sm"
+                className="input input-bordered w-full p-3 rounded-md border-blue-100 bg-blue-300 text-black"
               />
               <input
                 type="text"
                 {...register('seating_capacity', { required: true })}
                 placeholder="Seating Capacity"
-                className="input input-bordered w-full p-3 rounded-md border-gray-300 shadow-sm"
+                className="input input-bordered w-full p-3 rounded-md border-blue-100 bg-blue-300 text-black"
               />
               <input
                 type="text"
                 {...register('color', { required: true })}
                 placeholder="Color"
-                className="input input-bordered w-full p-3 rounded-md border-gray-300 shadow-sm"
+                className="input input-bordered w-full p-3 rounded-md border-blue-100 bg-blue-300 text-black"
               />
               <input
                 type="text"
                 {...register('features', { required: true })}
                 placeholder="Features"
-                className="input input-bordered w-full p-3 rounded-md border-gray-300 shadow-sm"
+                className="input input-bordered w-full p-3 rounded-md border-blue-100 bg-blue-300 text-black"
               />
               <div className="col-span-1">
                 <input
                   type="file"
                   onChange={handleFile}
-                  className="input input-bordered w-full p-2 mb-2"
+                  className="input input-bordered w-full p-2 mb-2 border-blue-100 bg-blue-300 text-black"
                 />
                 {imageUrl && <img src={imageUrl} alt="Uploaded" className="mt-2 rounded-md shadow-sm" width={150} />}
               </div>
@@ -192,39 +192,39 @@ const AllsVehSpecs: React.FC = () => {
         </div>
       </dialog>
 
-      <div className="overflow-x-auto mt-6">
-        <table className="min-w-full bg-white rounded-lg shadow-md border border-gray-200">
-          <thead className="bg-gray-200">
+      <div className="overflow-x-auto flex flex-col items-center mt-6">
+      <table className="table w-4/5 bg-blue-100 rounded-lg shadow-md ">
+      <thead className="bg-blue-400">
             <tr>
-              <th className="py-3 px-4 border-b font-semibold">ID</th>
-              <th className="py-3 px-4 border-b font-semibold">Manufacturer</th>
-              <th className="py-3 px-4 border-b font-semibold">Model</th>
-              <th className="py-3 px-4 border-b font-semibold">Year</th>
-              <th className="py-3 px-4 border-b font-semibold">Fuel Type</th>
-              <th className="py-3 px-4 border-b font-semibold">Transmission</th>
-              <th className="py-3 px-4 border-b font-semibold">Seats</th>
-              <th className="py-3 px-4 border-b font-semibold">Color</th>
-              <th className="py-3 px-4 border-b font-semibold">Image</th> {/* New Column */}
-              <th className="py-3 px-4 border-b font-semibold">Actions</th>
+              <th className="text-black py-2 text-lg font-bold text-left">ID</th>
+              <th className="text-black py-2 text-lg font-bold text-left">Manufacturer</th>
+              <th className="text-black py-2 text-lg font-bold text-left">Model</th>
+              <th className="text-black py-2 text-lg font-bold text-left">Year</th>
+              <th className="text-black py-2 text-lg font-bold text-left">Fuel Type</th>
+              <th className="text-black py-2 text-lg font-bold text-left">Transmission</th>
+              <th className="text-black py-2 text-lg font-bold text-left">Seats</th>
+              <th className="text-black py-2 text-lg font-bold text-left">Color</th>
+              <th className="text-black py-2 text-lg font-bold text-left">Image</th> {/* New Column */}
+              <th className="text-black py-2 text-lg font-bold text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
             {vehiclesSpecs.map((vehicleSpec) => (
-              <tr key={vehicleSpec.id} className="hover:bg-gray-50 transition duration-200">
-                <td className="py-3 px-4 border-b">{vehicleSpec.id}</td>
-                <td className="py-3 px-4 border-b">{vehicleSpec.manufacturer}</td>
-                <td className="py-3 px-4 border-b">{vehicleSpec.model}</td>
-                <td className="py-3 px-4 border-b">{vehicleSpec.year}</td>
-                <td className="py-3 px-4 border-b">{vehicleSpec.fuel_type}</td>
-                <td className="py-3 px-4 border-b">{vehicleSpec.transmission}</td>
-                <td className="py-3 px-4 border-b">{vehicleSpec.seating_capacity}</td>
-                <td className="py-3 px-4 border-b">{vehicleSpec.color}</td>
-                <td className="py-3 px-4 border-b">
+              <tr key={vehicleSpec.id} className="hover:bg-blue-100 transition duration-200">
+                <td className="py-2 font-bold text-blue-900">{vehicleSpec.id}</td>
+                <td className="py-2 font-bold text-blue-900">{vehicleSpec.manufacturer}</td>
+                <td className="py-2 font-bold text-blue-900">{vehicleSpec.model}</td>
+                <td className="py-2 font-bold text-blue-900">{vehicleSpec.year}</td>
+                <td className="py-2 font-bold text-blue-900">{vehicleSpec.fuel_type}</td>
+                <td className="py-2 font-bold text-blue-900">{vehicleSpec.transmission}</td>
+                <td className="py-2 font-bold text-blue-900">{vehicleSpec.seating_capacity}</td>
+                <td className="py-2 font-bold text-blue-900">{vehicleSpec.color}</td>
+                <td className="py-2 font-bold text-blue-900">
                   {vehicleSpec.imageUrl && (
                     <img src={vehicleSpec.imageUrl} alt={`${vehicleSpec.manufacturer} ${vehicleSpec.model}`} className="w-24 h-16 object-cover" />
                   )}
                 </td>
-                <td className="py-3 px-4 border-b">
+                <td className="py-2 font-bold text-blue-900">
                   <button onClick={() => handleDeleteSpecs(vehicleSpec.id)} className="btn btn-danger p-2 rounded-md">
                     Delete
                   </button>

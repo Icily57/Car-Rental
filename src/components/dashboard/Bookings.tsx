@@ -58,16 +58,16 @@ const Booking: React.FC = () => {
   }
 
   if (error) {
-    return <div className="text-center text-red-500 bg-cyan-100">Error loading bookings. Please try again later.</div>;
+    return <div className="text-center text-red-500 bg-gradient-to-b from-blue-900 via-blue-600 to-blue-900">Error loading bookings. Please try again later.</div>;
   }
 
   return (
-    <div className="container mx-auto py-8 px-4 bg-cyan-100">
+    <div className="container mx-auto py-8 px-4 bg-gradient-to-b from-blue-900 via-blue-600 to-blue-900">
       <h1 className="text-3xl font-bold text-center mb-8">My Bookings</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         {pendingBookings?.map((booking: UserBooking) => (
-          <div key={booking.id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200">
+          <div key={booking.id} className="bg-blue-100 rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200">
             <h2 className="text-xl font-bold mb-2">Booking ID: {booking.id}</h2>
             <p><strong>Booking Date:</strong> {booking.booking_date}</p>
             <p><strong>Return Date:</strong> {booking.return_date}</p>
@@ -87,7 +87,7 @@ const Booking: React.FC = () => {
 
       <h2 className="text-2xl font-bold text-center mb-4">Confirmed Bookings</h2>
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white rounded-lg shadow-md">
+        <table className="min-w-full bg-blue-100 rounded-lg shadow-md">
           <thead>
             <tr>
               <th className="py-3 px-4 bg-gray-200 font-bold">Booking ID</th>
