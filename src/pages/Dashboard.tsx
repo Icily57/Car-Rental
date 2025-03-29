@@ -1,11 +1,11 @@
 import Layout from "../Dashboard/Layout";
 import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
+import Nav from "../Dashboard/Nav";
 
 export default function Dashboard() {
     return (
         <div className="h-screen">
-            <Navbar />
+            <Nav />
             <Layout />
             <Footer />
         </div>

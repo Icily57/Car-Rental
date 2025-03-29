@@ -4,11 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination, Autoplay } from "swiper/modules";
-<<<<<<< HEAD
-// import "./Hero.css";
-=======
-import "./Hero.css";
->>>>>>> 552f324099703b0f933f6419d6d87aae2d85b0c5
+
 
 import Benefit1 from "../assets/car 1.jpg";
 import Benefit2 from "../assets/car 1-1.jpg";
@@ -24,7 +20,6 @@ const images = [Benefit1, Benefit2, Benefit3, Benefit4, Benefit5, Benefit6, Bene
 
 export default function Hero() {
   return (
-<<<<<<< HEAD
     <div className="hero h-fit mb-20 bg-gradient-to-b from-black via-gray-900 to-black text-white py-16">
       <div className="hero-content grid md:grid-cols-2 sm:gap-10 items-center px-8 max-w-6xl mx-auto">
         <div>
@@ -40,16 +35,6 @@ export default function Hero() {
           <p className="text-md text-gray-500 italic">
             Whether it's a business trip, a weekend getaway, or a joyride in the car you’ve always wanted,  
             we’ve got you covered.
-=======
-    <div className="hero h-fit mb-20">
-      <div className="hero-content grid md:grid-cols-2 sm:gap-5">
-        <div>
-          <h1 className="text-5xl font-bold">
-            Want to drive or be in your dream car but can't afford to buy?
-          </h1>
-          <p className="py-6">
-            Enuma Car Rental Services got you covered. We offer you the best affordable car rental services. We ensure that we make your dream come true by providing you with the easy and seamless process of having your dream car, even if for a while😉.
->>>>>>> 552f324099703b0f933f6419d6d87aae2d85b0c5
           </p>
           <Link to="/register">
             <button className="mt-4 bg-blue-500 hover:bg-blue-600 text-black px-6 py-3 rounded-lg shadow-xl transition-all duration-300 font-semibold 

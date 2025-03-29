@@ -61,8 +61,8 @@ const Explore: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="container mx-auto py-8 bg-gradient-to-r from-blue-100 to-blue-200">
-        <h1 className="text-4xl font-extrabold text-center mb-8 text-gray-900">Explore Our Cars</h1>
+      <div className="container mx-auto py-8 bg-gradient-to-b from-black via-gray-900 to-black">
+        <h1 className="text-4xl font-extrabold text-center mb-8 text-blue-400">Explore Our Cars</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {cars.map((car) => (
             car && car.vehicleSpecs && (

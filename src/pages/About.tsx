@@ -30,40 +30,40 @@ const About: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="p-6 bg-gradient-to-r from-blue-100 to-blue-200 text-gray-800 min-h-screen">
+      <div className="p-6 bg-gradient-to-b from-black via-gray-900 to-black text-gray-800 min-h-screen">
         <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-          <div className="flex items-center justify-center py-4 bg-blue-500 text-white">
+          <div className="flex items-center justify-center py-4 bg-blue-900 text-gray-200">
             <Info className="w-8 h-8" />
             <h1 className="text-3xl font-extrabold ml-2">About Us</h1>
           </div>
-          <div className="p-6">
-            <p className="mb-4 text-gray-700">Welcome to our Vehicle Rental Management System. Our platform facilitates the efficient rental process of vehicles, ensuring a seamless experience for both administrators and customers. We offer a wide range of four-wheelers and two-wheelers to cater to your needs.</p>
-            <p className="mb-4 text-gray-700">Our system is built using modern technologies such as React.js for the frontend, Hono and Drizzle for the backend, and PostgreSQL for data storage. We also integrate Stripe for secure payment processing.</p>
-            <h2 className="text-2xl text-blue-600 font-bold mb-2">Our Features</h2>
+          <div className="p-6 bg-gradient-to-b from-black via-gray-900 to-black">
+            <p className="mb-4 text-gray-200">Welcome to our Vehicle Rental Management System. Our platform facilitates the efficient rental process of vehicles, ensuring a seamless experience for both administrators and customers. We offer a wide range of four-wheelers and two-wheelers to cater to your needs.</p>
+            <p className="mb-4 text-gray-200">Our system is built using modern technologies such as React.js for the frontend, Hono and Drizzle for the backend, and PostgreSQL for data storage. We also integrate Stripe for secure payment processing.</p>
+            <h2 className="text-2xl text-blue-700 font-bold mb-2">Our Features</h2>
             <ol className="list-decimal list-inside mb-4 bg-gray-200 p-4 rounded-lg">
-              <li className="bg-gray-100 p-2 rounded mb-2 transition duration-300 ease-in-out transform hover:scale-105">User-friendly booking system</li>
-              <li className="bg-gray-100 p-2 rounded mb-2 transition duration-300 ease-in-out transform hover:scale-105">Secure payment gateway</li>
-              <li className="bg-gray-100 p-2 rounded mb-2 transition duration-300 ease-in-out transform hover:scale-105">Comprehensive admin dashboard</li>
-              <li className="bg-gray-100 p-2 rounded mb-2 transition duration-300 ease-in-out transform hover:scale-105">Detailed reports and analytics</li>
-              <li className="bg-gray-100 p-2 rounded mb-2 transition duration-300 ease-in-out transform hover:scale-105">Responsive user interface</li>
+              <li className="bg-gray-300 p-2 rounded mb-2 transition duration-300 ease-in-out transform hover:scale-105">User-friendly booking system</li>
+              <li className="bg-gray-300 p-2 rounded mb-2 transition duration-300 ease-in-out transform hover:scale-105">Secure payment gateway</li>
+              <li className="bg-gray-300 p-2 rounded mb-2 transition duration-300 ease-in-out transform hover:scale-105">Comprehensive admin dashboard</li>
+              <li className="bg-gray-300 p-2 rounded mb-2 transition duration-300 ease-in-out transform hover:scale-105">Detailed reports and analytics</li>
+              <li className="bg-gray-300 p-2 rounded mb-2 transition duration-300 ease-in-out transform hover:scale-105">Responsive user interface</li>
             </ol>
-            <p className='font-semibold text-gray-700'>Thank you for choosing our platform. We strive to provide the best rental experience for all our users.</p>
+            <p className='font-semibold text-gray-200'>Thank you for choosing our platform. We strive to provide the best rental experience for all our users.</p>
             
             {/* Our Services Section */}
             <h2 className="text-2xl text-blue-600 font-bold my-4">Our Services</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-gradient-to-b from-black via-gray-900 to-black">
               {services.map((service, index) => (
-                <div key={index} className="bg-white p-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
+                <div key={index} className="bg-gray-300 p-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105">
                   <h3 className="text-xl font-semibold text-gray-800 mb-2">{service.name}</h3>
-                  <p className="text-gray-600">{service.description}</p>
+                  <p className="text-gray-700">{service.description}</p>
                 </div>
               ))}
             </div>
             
             <h2 className="text-2xl text-blue-600 font-bold my-4">Our Team</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
               {staffData.map((staff, index) => (
-                <div key={index} className="bg-white p-4 rounded-lg shadow-md text-center transition duration-300 ease-in-out transform hover:scale-105">
+                <div key={index} className="bg-gray-200 p-4 rounded-lg shadow-md text-center transition duration-300 ease-in-out transform hover:scale-105">
                   <img src={staff.image} alt={staff.name} className="w-24 h-24 mx-auto rounded-full mb-2" />
                   <h3 className="text-lg font-bold text-gray-800">{staff.name}</h3>
                   <p className="text-gray-600">{staff.position}</p>

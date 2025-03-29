@@ -4,14 +4,14 @@ import Footer from "../components/Footer"
 import Hero from "../components/Hero"
 import Benefits from "../components/Benefits"
 import { benefitOne } from "../utils/data"
-import Fleet from "./Fleet"
+// import Fleet from "./Fleet"
 const Home = () => {
   return (
     <div>
         <Navbar />
-      <Container className="bg-blue-100 text-black flex flex-col gap-6">
+      <Container className="bg-gradient-to-b from-black  to-black text-black flex flex-col gap-6 width-100%">
         <Hero/>
-        <Fleet/>
+        {/* <Fleet/> */}
         <Benefits data={benefitOne} /> 
       </Container>
         <Footer />
