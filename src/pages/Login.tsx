@@ -38,7 +38,7 @@ const UserLogin: React.FC = () => {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-blue-800 via-blue-700 to-blue-900 p-6">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="card bg-white/90 backdrop-blur-md p-10 rounded-2xl shadow-2xl w-full max-w-md text-gray-800 border border-blue-200"
+          className="card bg-gray-200 backdrop-blur-md p-10 rounded-2xl shadow-2xl w-full max-w-md text-gray-800 border border-blue-200"
         >
           <h1 className="text-3xl font-bold text-center mb-6 text-blue-700 font-[Poppins]">
             🔐 Welcome Back! Login
@@ -49,20 +49,18 @@ const UserLogin: React.FC = () => {
               { label: "Email", name: "email", type: "email", required: true },
               { label: "Password", name: "password", type: "password", required: true },
             ].map(({ label, name, type, required }) => (
-              <div key={name} className="relative">
-                <input
-                  {...register(name as keyof FormValues, required ? { required: true } : {})}
-                  type={type}
-                  placeholder=" "
-                  className="peer w-full px-4 py-3 border border-blue-300 rounded-lg bg-blue-50 text-lg text-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
-                />
-                <label className="absolute left-4 top-3 text-gray-500 text-lg transition-all peer-placeholder-shown:top-4 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-1 peer-focus:text-sm peer-focus:text-blue-600">
-                  {label}
-                </label>
-                {errors[name as keyof FormValues] && (
-                  <span className="text-red-500 text-sm">⚠️ {label} is required</span>
-                )}
-              </div>
+              <div key={name} className="flex flex-col space-y-2">
+              <label className="text-lg font-medium text-blue-900">{label}</label>
+              <input
+                {...register(name as keyof FormValues, required ? { required: true } : {})}
+                type={type}
+                className="w-full px-4 py-3 border border-blue-300 rounded-lg bg-blue-50 text-lg text-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+              />
+              {errors[name as keyof FormValues] && (
+                <span className="text-red-500 text-sm">⚠️ {label} is required</span>
+              )}
+            </div>
+            
             ))}
           </div>
 

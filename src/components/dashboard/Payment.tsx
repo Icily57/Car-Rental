@@ -23,30 +23,31 @@ const UserPayments: React.FC = () => {
         pollingInterval: 60000,
     });
 
+    if (isLoading) {
+        return  <div className="flex justify-center items-center h-screen">
+        <AiOutlineLoading3Quarters className="animate-spin text-4xl text-blue-500" />
+    </div>;
+      }
+    
+      if (isError) {
+        return<div className="text-center text-red-500 text-lg">
+        Error fetching payments. Please try again later.
+    </div>;
+      }
+
     return (
-        <div className="container mx-auto p-6 bg-gradient-to-b from-blue-900 via-blue-600 to-blue-900 min-h-screen">
-            <h1 className="text-3xl font-bold text-center mb-8">Your Payments</h1>
-            {isLoading && (
-                <div className="flex justify-center items-center h-screen">
-                    <AiOutlineLoading3Quarters className="animate-spin text-4xl text-blue-500" />
-                </div>
-            )}
-            {isError && (
-                <div className="text-center text-red-500 text-lg">
-                    Error fetching payments. Please try again later.
-                </div>
-            )}
-            {payments && (
-                <div className="overflow-x-auto">
+        <div className="container mx-auto py-8 px-4 bg-gradient-to-b from-blue-900 via-blue-600 to-blue-900">
+            <h1 className="text-5xl font-bold text-center mb-8 text-white">My Transactions</h1>
+        <div className="overflow-x-auto flex flex-col items-center">
                     <table className="min-w-full bg-blue-100 rounded-lg shadow-md text-black">
                         <thead className="bg-blue-300">
                             <tr>
-                                <th className="py-3 px-4 border-b">ID</th>
-                                <th className="py-3 px-4 border-b">Booking ID</th>
-                                <th className="py-3 px-4 border-b">Payment Date</th>
-                                <th className="py-3 px-4 border-b">Payment Status</th>
-                                <th className="py-3 px-4 border-b">Amount</th>
-                                <th className="py-3 px-4 border-b">Payment Method</th>
+                                <th className="text-black py-2 text-lg font-bold text-left">ID</th>
+                                <th className="text-black py-2 text-lg font-bold text-left">Booking ID</th>
+                                <th className="text-black py-2 text-lg font-bold text-left">Payment Date</th>
+                                <th className="text-black py-2 text-lg font-bold text-left">Payment Status</th>
+                                <th className="text-black py-2 text-lg font-bold text-left">Amount</th>
+                                <th className="text-black py-2 text-lg font-bold text-left">Payment Method</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -71,8 +72,7 @@ const UserPayments: React.FC = () => {
                         </tbody>
                     </table>
                 </div>
-            )}
-        </div>
+            </div>
     );
 };
 

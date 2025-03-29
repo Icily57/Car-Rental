@@ -46,8 +46,8 @@ const Ticket: React.FC = () => {
   return (
     <div className=" bg-gradient-to-b from-blue-800 via-blue-500 to-blue-800 min-h-screen p-6">
       <Toaster />
-      <div className="max-w-md mx-auto mt-10 p-6 border border-blue-300 rounded-lg shadow-md bg-blue-100">
-        <h2 className="text-2xl font-bold mb-4 text-blue-950">Create a Ticket</h2>
+      <div className="max-w-md mx-auto mt-10 p-6 border border-blue-400 rounded-lg shadow-md bg-blue-100">
+        <h2 className="text-5xl font-bold text-center mb-8 text-black">Create a Ticket</h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
             <label htmlFor="subject" className="block text-sm font-medium text-black">Subject</label>
@@ -81,7 +81,7 @@ const Ticket: React.FC = () => {
       </div>
 
       <div className="mt-8">
-        <h2 className="font-bold text-3xl text-center mb-4 text-white">Your Tickets</h2>
+        <h2 className="text-5xl font-bold text-center mb-8 text-white">Your Tickets</h2>
         {tickets?.length ? (
           <div className="overflow-x-auto">
             <table className="table-fixed min-w-full bg-blue-100 rounded-lg shadow-md">

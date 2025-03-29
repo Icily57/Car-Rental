@@ -52,7 +52,7 @@ const Booking: React.FC = () => {
   };
 
   if (isLoading) {
-    return <div className="flex justify-center items-center h-screen bg-cyan-100">
+    return <div className="flex justify-center items-center h-screen bg-blue-500">
       <AiOutlineLoading3Quarters className="animate-spin text-4xl text-blue-500" />
     </div>;
   }
@@ -63,7 +63,7 @@ const Booking: React.FC = () => {
 
   return (
     <div className="container mx-auto py-8 px-4 bg-gradient-to-b from-blue-900 via-blue-600 to-blue-900">
-      <h1 className="text-3xl font-bold text-center mb-8">My Bookings</h1>
+      <h1 className="text-5xl font-bold text-center mb-8 text-white">My Bookings</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
         {pendingBookings?.map((booking: UserBooking) => (
@@ -85,15 +85,15 @@ const Booking: React.FC = () => {
         ))}
       </div>
 
-      <h2 className="text-2xl font-bold text-center mb-4">Confirmed Bookings</h2>
+      <h2 className="text-3xl font-bold text-center mb-4 text-white">Confirmed Bookings</h2>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-blue-100 rounded-lg shadow-md">
           <thead>
             <tr>
-              <th className="py-3 px-4 bg-gray-200 font-bold">Booking ID</th>
-              <th className="py-3 px-4 bg-gray-200 font-bold">Booking Date</th>
-              <th className="py-3 px-4 bg-gray-200 font-bold">Return Date</th>
-              <th className="py-3 px-4 bg-gray-200 font-bold">Total Amount</th>
+              <th className="text-black py-2 text-lg font-bold text-left">Booking ID</th>
+              <th className="text-black py-2 text-lg font-bold text-left">Booking Date</th>
+              <th className="text-black py-2 text-lg font-bold text-left">Return Date</th>
+              <th className="text-black py-2 text-lg font-bold text-left">Total Amount</th>
             </tr>
           </thead>
           <tbody>
